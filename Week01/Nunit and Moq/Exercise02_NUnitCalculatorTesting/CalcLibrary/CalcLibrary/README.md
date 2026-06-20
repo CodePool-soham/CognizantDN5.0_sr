@@ -1,434 +1,222 @@
-\# Exercise02\_NUnitCalculatorTesting
+# Exercise02_NUnitCalculatorTesting
 
+## Objective
 
+The objective of this exercise is to demonstrate NUnit Unit Testing concepts, including:
 
-\## Objective
+* Parameterized Test Cases
+* Testing methods that return values
+* Testing void methods
+* Testing methods that throw exceptions
+* Usage of `Assert.Fail`
+* Exception handling using Try-Catch
+* Understanding private method testing
+* Introduction to Mocking Frameworks and Moq
 
+---
 
+# Project Details
 
-The objective of this exercise is to demonstrate NUnit Unit Testing concepts including:
+## Application Under Test
 
+**Application:** `CalcLibrary`
 
-
-\* Parameterized Test Cases
-
-\* Testing methods that return values
-
-\* Testing void methods
-
-\* Testing methods that throw exceptions
-
-\* Usage of Assert.Fail
-
-\* Exception handling using Try-Catch
-
-\* Understanding private method testing
-
-\* Introduction to Mocking Frameworks and Moq
-
-
-
-\---
-
-
-
-\## Project Details
-
-
-
-\### Application Under Test
-
-
-
-\*\*CalcLibrary\*\*
-
-
-
-Class Tested:
-
-
+## Class Tested
 
 ```csharp
-
 SimpleCalculator
-
 ```
 
+## Methods Tested
 
+* `Addition()`
+* `Subtraction()`
+* `Multiplication()`
+* `Division()`
+* `AllClear()`
+* `GetResult` Property
 
-Methods Tested:
+---
 
+# Test Cases Implemented
 
+## 1. Subtraction Test
 
-\* Addition()
+Parameterized test cases were created using the `TestCase` attribute.
 
-\* Subtraction()
+### Tested Scenarios
 
-\* Multiplication()
+* Positive numbers
+* Different numeric combinations
+* Negative numbers
 
-\* Division()
+### Verification
 
-\* AllClear()
+* Expected and actual values were compared using NUnit assertions.
 
-\* GetResult Property
+---
 
+## 2. Multiplication Test
 
+Parameterized test cases were created using the `TestCase` attribute.
 
-\---
+### Tested Scenarios
 
+* Positive values
+* Multiple multiplication combinations
+* Negative values
 
+### Verification
 
-\## Test Cases Implemented
+* Expected and actual values were compared using NUnit assertions.
 
+---
 
+## 3. Division Test
 
-\### 1. Subtraction Test
+Parameterized test cases were created using the `TestCase` attribute.
 
+### Tested Scenarios
 
+* Valid division operations
+* Multiple division combinations
 
-Parameterized test cases were created using the TestCase attribute.
+### Verification
 
+* Expected and actual values were compared using NUnit assertions.
 
+---
 
-Tested scenarios:
-
-
-
-\* Positive numbers
-
-\* Different numeric combinations
-
-\* Negative numbers
-
-
-
-Verification:
-
-
-
-\* Expected and Actual values were compared using NUnit assertions.
-
-
-
-\---
-
-
-
-\### 2. Multiplication Test
-
-
-
-Parameterized test cases were created using the TestCase attribute.
-
-
-
-Tested scenarios:
-
-
-
-\* Positive values
-
-\* Multiple multiplication combinations
-
-\* Negative values
-
-
-
-Verification:
-
-
-
-\* Expected and Actual values were compared using NUnit assertions.
-
-
-
-\---
-
-
-
-\### 3. Division Test
-
-
-
-Parameterized test cases were created using the TestCase attribute.
-
-
-
-Tested scenarios:
-
-
-
-\* Valid division operations
-
-\* Multiple division combinations
-
-
-
-Verification:
-
-
-
-\* Expected and Actual values were compared using NUnit assertions.
-
-
-
-\---
-
-
-
-\### 4. Division By Zero Exception Test
-
-
+## 4. Division By Zero Exception Test
 
 A separate test case was created to verify exception handling.
 
+### Implementation
 
+* Used a Try-Catch block.
+* Captured `ArgumentException`.
+* Validated the exception message.
+* Used `Assert.Fail` when the exception was not thrown.
 
-Implementation:
-
-
-
-\* Try-Catch block used
-
-\* ArgumentException captured
-
-\* Exception message validated
-
-\* Assert.Fail used when exception was not thrown
-
-
-
-Expected Exception Message:
-
-
+### Expected Exception Message
 
 ```text
-
 Second Parameter Can't be Zero
-
 ```
 
+---
 
+## 5. TestAddAndClear
 
-\---
+### Purpose
 
+To test the void method `AllClear()`.
 
+### Steps Performed
 
-\### 5. TestAddAndClear
-
-
-
-Purpose:
-
-
-
-To test the void method AllClear().
-
-
-
-Steps Performed:
-
-
-
-1\. Invoked Addition()
-
-2\. Verified result using GetResult property
-
-3\. Invoked AllClear()
-
-4\. Verified GetResult returned 0
-
-
+1. Invoked `Addition()`.
+2. Verified the result using the `GetResult` property.
+3. Invoked `AllClear()`.
+4. Verified that `GetResult` returned `0`.
 
 This confirms that the internal calculator state is reset correctly.
 
+---
 
+# Assertions Used
 
-\---
-
-
-
-\## Assertions Used
-
-
-
-\### Assert.That
-
-
+## Assert.That
 
 Used to compare actual and expected values.
 
-
-
 Example:
 
-
-
 ```csharp
-
 Assert.That(actual, Is.EqualTo(expected));
-
 ```
 
+---
 
+## Assert.Fail
 
-\### Assert.Fail
-
-
-
-Used in exception testing.
-
-
+Used during exception testing when the expected exception is not thrown.
 
 Example:
 
-
-
 ```csharp
-
 Assert.Fail("Division by zero");
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Why Testing Private Methods Is Not Beneficial
-
-
+# Why Testing Private Methods Is Not Beneficial
 
 Private methods are implementation details of a class and are not directly accessible to consumers.
 
-
-
 Unit tests should focus on testing the public behavior of a class rather than its internal implementation.
 
+## Benefits of Testing Public Methods
 
+* Reduces maintenance effort.
+* Prevents tests from breaking when internal implementation changes.
+* Encourages better encapsulation.
+* Focuses on actual business functionality.
 
-Benefits of testing public methods instead:
+---
 
+# Mocking Framework and Moq
 
-
-\* Reduces maintenance effort
-
-\* Prevents tests from breaking when internal implementation changes
-
-\* Encourages better encapsulation
-
-\* Focuses on actual business functionality
-
-
-
-\---
-
-
-
-\## Mocking Framework and Moq
-
-
-
-\### What is Mocking?
-
-
+## What is Mocking?
 
 Mocking is the process of creating fake objects that simulate the behavior of real dependencies.
 
-
-
 Examples of dependencies:
 
+* Database connections
+* File systems
+* Web services
+* External APIs
 
+Mocking helps isolate the unit being tested by replacing external dependencies with controlled test objects.
 
-\* Database connections
+---
 
-\* File systems
-
-\* Web services
-
-\* External APIs
-
-
-
-Mocking helps isolate the unit being tested.
-
-
-
-\### What is Moq?
-
-
+## What is Moq?
 
 Moq is a popular .NET mocking framework used for creating mock objects during unit testing.
 
+## Benefits of Moq
 
+* Faster execution of tests.
+* Independent unit testing.
+* No dependency on external systems.
+* Easier simulation of different scenarios.
+* Improved test reliability.
 
-Benefits of Moq:
+---
 
-
-
-\* Faster execution of tests
-
-\* Independent testing
-
-\* No dependency on external systems
-
-\* Easier simulation of different scenarios
-
-\* Better test reliability
-
-
-
-\---
-
-
-
-\## Test Results
-
-
+# Test Results
 
 All unit test cases were executed successfully.
 
+## Implemented Tests
 
+1. `TestSubtraction`
+2. `TestMultiplication`
+3. `TestDivision`
+4. `TestDivisionByZero`
+5. `TestAddAndClear`
 
-Implemented Tests:
-
-
-
-1\. TestSubtraction
-
-2\. TestMultiplication
-
-3\. TestDivision
-
-4\. TestDivisionByZero
-
-5\. TestAddAndClear
-
-
-
-Result:
-
-
+## Result
 
 ```text
-
 All Tests Passed Successfully
-
 ```
 
+---
 
+# Conclusion
 
-\---
+The NUnit framework was successfully used to create and execute parameterized tests, exception tests, and void method tests for the `SimpleCalculator` class.
 
-
-
-\## Conclusion
-
-
-
-The NUnit framework was successfully used to create and execute parameterized tests, exception tests, and void method tests for the SimpleCalculator class. All objectives of the exercise were completed successfully.
-
-
-
+All objectives of the exercise were completed successfully, including understanding assertions, exception handling, test case design, and the role of mocking frameworks in unit testing.
