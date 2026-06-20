@@ -1,622 +1,320 @@
-\# Exercise04\_NUnitAccountsManagerTesting
+# Exercise04_NUnitAccountsManagerTesting
 
+## Objective
 
-
-\## Objective
-
-
-
-This lab demonstrates how to write automated unit tests using the NUnit framework and use NUnit custom attributes to identify tests.
-
-
+This lab demonstrates how to write automated unit tests using the NUnit framework and use NUnit custom attributes to identify and execute test cases.
 
 The objective is to verify the functionality of the `ValidateUser()` method in the `AccountsManager` class under different scenarios.
 
+---
 
+# Project Details
 
-\---
+## Source Project
 
+**AccountsManagerLib**
 
+---
 
-\## Project Details
+## System Under Test (SUT)
 
-
-
-\### Source Project
-
-
-
-\*\*AccountsManagerLib\*\*
-
-
-
-\### System Under Test (SUT)
-
-
-
-```csharp
-
+```csharp id="5m8x2v"
 AccountsManager
-
 ```
 
+---
 
+## Method Under Test
 
-\### Method Under Test
-
-
-
-```csharp
-
+```csharp id="7q3n1a"
 ValidateUser(string userId, string password)
-
 ```
 
+---
 
+# Test Project
 
-\---
+## Project Name
 
-
-
-\## Test Project
-
-
-
-Project Name:
-
-
-
-```text
-
+```text id="9p2k6x"
 AccountsManagerLib.Tests
-
 ```
 
+## Test Class Name
 
-
-Test Class Name:
-
-
-
-```text
-
+```text id="4v7m3q"
 AccountsManagerTests
-
 ```
 
+## Naming Convention Used
 
-
-Naming Convention Used:
-
-
-
-```text
-
-UnitUnderTest\_Scenario\_ExpectedOutcome
-
+```text id="6x1z8n"
+UnitUnderTest_Scenario_ExpectedOutcome
 ```
 
+### Examples
 
+```text id="2h5w9m"
+ValidateUser_ValidUser11Credentials_ReturnsWelcomeMessage
 
-Examples:
+ValidateUser_ValidUser22Credentials_ReturnsWelcomeMessage
 
+ValidateUser_InvalidCredentials_ReturnsInvalidUserMessage
 
+ValidateUser_EmptyUserId_ThrowsFormatException
 
-```text
-
-ValidateUser\_ValidUser11Credentials\_ReturnsWelcomeMessage
-
-ValidateUser\_ValidUser22Credentials\_ReturnsWelcomeMessage
-
-ValidateUser\_InvalidCredentials\_ReturnsInvalidUserMessage
-
-ValidateUser\_EmptyUserId\_ThrowsFormatException
-
-ValidateUser\_EmptyPassword\_ThrowsFormatException
-
+ValidateUser_EmptyPassword_ThrowsFormatException
 ```
 
+---
 
+# NUnit Attributes Used
 
-\---
+## [Test]
 
+The `[Test]` attribute is used to identify a method as a test case.
 
+### Example
 
-\## NUnit Attributes Used
-
-
-
-\### \[Test]
-
-
-
-The `\[Test]` attribute is used to identify a method as a test case.
-
-
-
-Example:
-
-
-
-```csharp
-
-\[Test]
-
-public void ValidateUser\_ValidUser11Credentials\_ReturnsWelcomeMessage()
-
+```csharp id="3n6q8x"
+[Test]
+public void ValidateUser_ValidUser11Credentials_ReturnsWelcomeMessage()
 {
-
 }
-
 ```
 
+---
 
+# Test Cases Implemented
 
-\---
+## 1. ValidateUser_ValidUser11Credentials_ReturnsWelcomeMessage
 
+### Input
 
-
-\## Test Cases Implemented
-
-
-
-\### 1. ValidateUser\_ValidUser11Credentials\_ReturnsWelcomeMessage
-
-
-
-\#### Input
-
-
-
-```text
-
-User Id  : user\_11
-
+```text id="7m2p5x"
+User Id  : user_11
 Password : secret@user11
-
 ```
 
+### Expected Output
 
-
-\#### Expected Output
-
-
-
-```text
-
-Welcome user\_11!!!
-
+```text id="8q4n1v"
+Welcome user_11!!!
 ```
 
-
-
-\#### Purpose
-
-
+### Purpose
 
 Verifies that a valid user receives the correct welcome message.
 
+---
 
+## 2. ValidateUser_ValidUser22Credentials_ReturnsWelcomeMessage
 
-\---
+### Input
 
-
-
-\### 2. ValidateUser\_ValidUser22Credentials\_ReturnsWelcomeMessage
-
-
-
-\#### Input
-
-
-
-```text
-
-User Id  : user\_22
-
+```text id="1x5k9m"
+User Id  : user_22
 Password : secret@user22
-
 ```
 
+### Expected Output
 
-
-\#### Expected Output
-
-
-
-```text
-
-Welcome user\_22!!!
-
+```text id="6v3q8p"
+Welcome user_22!!!
 ```
 
-
-
-\#### Purpose
-
-
+### Purpose
 
 Verifies that a second valid user receives the correct welcome message.
 
+---
 
+## 3. ValidateUser_InvalidCredentials_ReturnsInvalidUserMessage
 
-\---
+### Input
 
-
-
-\### 3. ValidateUser\_InvalidCredentials\_ReturnsInvalidUserMessage
-
-
-
-\#### Input
-
-
-
-```text
-
-User Id  : user\_99
-
+```text id="4m8z2q"
+User Id  : user_99
 Password : wrongpassword
-
 ```
 
+### Expected Output
 
-
-\#### Expected Output
-
-
-
-```text
-
+```text id="9n1x5v"
 Invalid user id/password
-
 ```
 
-
-
-\#### Purpose
-
-
+### Purpose
 
 Verifies that invalid credentials return the appropriate error message.
 
+---
 
+## 4. ValidateUser_EmptyUserId_ThrowsFormatException
 
-\---
+### Input
 
-
-
-\### 4. ValidateUser\_EmptyUserId\_ThrowsFormatException
-
-
-
-\#### Input
-
-
-
-```text
-
+```text id="5q7m3x"
 User Id  : ""
-
 Password : secret@user11
-
 ```
 
+### Expected Output
 
-
-\#### Expected Output
-
-
-
-```text
-
+```text id="2v8n4p"
 FormatException
-
 ```
 
+### Purpose
 
+Verifies that an exception is thrown when the user ID is not provided.
 
-\#### Purpose
+---
 
+## 5. ValidateUser_EmptyPassword_ThrowsFormatException
 
+### Input
 
-Verifies that an exception is thrown when the user id is not supplied.
-
-
-
-\---
-
-
-
-\### 5. ValidateUser\_EmptyPassword\_ThrowsFormatException
-
-
-
-\#### Input
-
-
-
-```text
-
-User Id  : user\_11
-
+```text id="3x6m9q"
+User Id  : user_11
 Password : ""
-
 ```
 
+### Expected Output
 
-
-\#### Expected Output
-
-
-
-```text
-
+```text id="8p1v5n"
 FormatException
-
 ```
 
+### Purpose
 
+Verifies that an exception is thrown when the password is not provided.
 
-\#### Purpose
+---
 
-
-
-Verifies that an exception is thrown when the password is not supplied.
-
-
-
-\---
-
-
-
-\## Single Assertion Rule
-
-
+# Single Assertion Rule
 
 Each test method contains a single assertion.
 
+### Example
 
-
-Example:
-
-
-
-```csharp
-
+```csharp id="4k7m2x"
 Assert.That(
-
-&#x20;   result,
-
-&#x20;   Is.EqualTo("Welcome user\_11!!!"));
-
+    result,
+    Is.EqualTo("Welcome user_11!!!"));
 ```
-
-
 
 This improves readability and makes failures easier to identify.
 
+---
 
+# Assertion Style Used
 
-\---
+## NUnit Constraint Model
 
-
-
-\## Assertion Style Used
-
-
-
-NUnit Constraint Model:
-
-
-
-```csharp
-
+```csharp id="6n3q8v"
 Assert.That(actual,
-
-&#x20;           Is.EqualTo(expected));
-
+            Is.EqualTo(expected));
 ```
 
+---
 
+## Exception Assertion
 
-Exception Assertion:
-
-
-
-```csharp
-
+```csharp id="9x5m1p"
 Assert.That(
-
-&#x20;   () => manager.ValidateUser("", "secret@user11"),
-
-&#x20;   Throws.TypeOf<FormatException>());
-
+    () => manager.ValidateUser("", "secret@user11"),
+    Throws.TypeOf<FormatException>());
 ```
 
+---
 
-
-\---
-
-
-
-\## Test Execution
-
-
+# Test Execution
 
 All test cases were executed using NUnit Test Explorer.
 
+## Initial Test Result
 
-
-\### Initial Test Result
-
-
-
-```text
-
+```text id="2q8m6x"
 5 Tests Passed
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Breaking the Application
-
-
+# Breaking the Application
 
 To verify the effectiveness of the tests, the source code was intentionally modified.
 
+## Original Code
 
-
-\### Original Code
-
-
-
-```csharp
-
+```csharp id="7v3n9m"
 outputMsg = string.Format("Welcome {0}!!!", userId);
-
 ```
 
+## Modified Code
 
-
-\### Modified Code
-
-
-
-```csharp
-
+```csharp id="1m6q8x"
 outputMsg = "Welcome User";
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Observed Result
-
-
+# Observed Result
 
 After modifying the source code and rerunning the tests:
 
-
-
-```text
-
+```text id="5n2v7q"
 Valid User Tests Failed
-
 Invalid Credential Test Passed
-
 Exception Tests Passed
-
 ```
 
+## Expected Outcome
 
-
-Expected Outcome:
-
-
-
-```text
-
+```text id="8x4m1p"
 2 Failed
-
 3 Passed
-
 ```
 
+This confirms that the tests are capable of detecting defects introduced into the application.
 
+---
 
-This confirms that the tests are capable of detecting defects in the application.
-
-
-
-\---
-
-
-
-\## Restoring the Application
-
-
+# Restoring the Application
 
 The original implementation was restored:
 
-
-
-```csharp
-
+```csharp id="3q7m9x"
 outputMsg = string.Format("Welcome {0}!!!", userId);
-
 ```
-
-
 
 Tests were executed again.
 
+## Final Result
 
-
-\### Final Result
-
-
-
-```text
-
+```text id="6p2n8v"
 All Tests Passed Successfully
-
 ```
 
+---
 
+# Concepts Demonstrated
 
-\---
+* NUnit Test Project Creation.
+* NUnit Custom Attributes.
+* `Assert.That()`.
+* Exception Testing.
+* Single Assertion Rule.
+* Naming conventions for test methods.
+* Validation of expected output.
+* Defect detection through automated testing.
 
+---
 
-
-\## Concepts Demonstrated
-
-
-
-\* NUnit Test Project Creation
-
-\* NUnit Custom Attributes
-
-\* Assert.That()
-
-\* Exception Testing
-
-\* Single Assertion Rule
-
-\* Naming Conventions for Test Methods
-
-\* Validation of Expected Output
-
-\* Defect Detection Through Automated Testing
-
-
-
-\---
-
-
-
-\## Conclusion
-
-
+# Conclusion
 
 The `ValidateUser()` functionality was successfully tested using NUnit.
 
-
-
 All valid, invalid, and exception scenarios were verified through automated unit tests. The test suite successfully detected intentional defects introduced into the application and validated the corrected implementation.
 
-
-
 All objectives of the exercise were completed successfully.
-
-
-
