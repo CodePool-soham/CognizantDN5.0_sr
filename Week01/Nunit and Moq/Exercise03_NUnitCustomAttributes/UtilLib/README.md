@@ -1,500 +1,257 @@
-\# Exercise03\_NUnitCustomAttributes
+# Exercise03_NUnitCustomAttributes
 
+## Objective
 
-
-\## Objective
-
-
-
-This lab demonstrates how to write automated unit tests using the NUnit framework and use NUnit custom attributes to identify tests.
-
-
+This lab demonstrates how to write automated unit tests using the NUnit framework and use NUnit custom attributes to identify and execute test cases.
 
 The exercise focuses on testing the functionality of the `ParseHostName()` method in the `UrlHostNameParser` class under different scenarios.
 
+---
 
+# Project Details
 
-\---
+## Source Project
 
+**UtilLib**
 
+---
 
-\## Project Details
+## System Under Test (SUT)
 
-
-
-\### Source Project
-
-
-
-\*\*UtilLib\*\*
-
-
-
-\### System Under Test (SUT)
-
-
-
-```csharp
-
+```csharp id="6p9z2m"
 UrlHostNameParser
-
 ```
 
+---
 
+## Method Under Test
 
-\### Method Under Test
-
-
-
-```csharp
-
+```csharp id="x8v4t1"
 ParseHostName(string url)
-
 ```
 
+---
 
+# Test Project
 
-\---
+## Project Name
 
-
-
-\## Test Project
-
-
-
-Project Name:
-
-
-
-```text
-
+```text id="w4y7kx"
 UtilLib.Tests
-
 ```
 
+## Test Class Name
 
-
-Test Class Name:
-
-
-
-```text
-
+```text id="1p9m7a"
 UrlHostNameParserTests
-
 ```
 
+## Naming Convention Used
 
-
-Naming Convention Used:
-
-
-
-```text
-
-UnitUnderTest\_Scenario\_ExpectedOutcome
-
+```text id="z2r5qs"
+UnitUnderTest_Scenario_ExpectedOutcome
 ```
 
+### Examples
 
+```text id="q5j8cx"
+ParseHostName_ValidHttpUrl_ReturnsHostName
 
-Examples:
+ParseHostName_ValidHttpsUrl_ReturnsHostName
 
-
-
-```text
-
-ParseHostName\_ValidHttpUrl\_ReturnsHostName
-
-ParseHostName\_ValidHttpsUrl\_ReturnsHostName
-
-ParseHostName\_InvalidProtocol\_ThrowsFormatException
-
+ParseHostName_InvalidProtocol_ThrowsFormatException
 ```
 
+---
 
+# NUnit Attributes Used
 
-\---
+## [Test]
 
+The `[Test]` attribute identifies a method as an NUnit test case.
 
+### Example
 
-\## NUnit Attributes Used
-
-
-
-\### \[Test]
-
-
-
-The `\[Test]` attribute is used to identify a method as a test case.
-
-
-
-Example:
-
-
-
-```csharp
-
-\[Test]
-
-public void ParseHostName\_ValidHttpUrl\_ReturnsHostName()
-
+```csharp id="3k7v1q"
+[Test]
+public void ParseHostName_ValidHttpUrl_ReturnsHostName()
 {
-
 }
-
 ```
 
+---
 
+# Test Cases Implemented
 
-\---
+## 1. ParseHostName_ValidHttpUrl_ReturnsHostName
 
+### Input
 
-
-\## Test Cases Implemented
-
-
-
-\### 1. ParseHostName\_ValidHttpUrl\_ReturnsHostName
-
-
-
-\#### Input
-
-
-
-```text
-
+```text id="6r8h0p"
 http://www.google.com/search
-
 ```
 
+### Expected Output
 
-
-\#### Expected Output
-
-
-
-```text
-
+```text id="8v0q3n"
 www.google.com
-
 ```
 
-
-
-\#### Purpose
-
-
+### Purpose
 
 Verifies that the parser correctly extracts the host name from a valid HTTP URL.
 
+---
 
+## 2. ParseHostName_ValidHttpsUrl_ReturnsHostName
 
-\---
+### Input
 
-
-
-\### 2. ParseHostName\_ValidHttpsUrl\_ReturnsHostName
-
-
-
-\#### Input
-
-
-
-```text
-
+```text id="2k5v9s"
 https://www.microsoft.com/login
-
 ```
 
+### Expected Output
 
-
-\#### Expected Output
-
-
-
-```text
-
+```text id="9m4x2a"
 www.microsoft.com
-
 ```
 
-
-
-\#### Purpose
-
-
+### Purpose
 
 Verifies that the parser correctly extracts the host name from a valid HTTPS URL.
 
+---
 
+## 3. ParseHostName_InvalidProtocol_ThrowsFormatException
 
-\---
+### Input
 
-
-
-\### 3. ParseHostName\_InvalidProtocol\_ThrowsFormatException
-
-
-
-\#### Input
-
-
-
-```text
-
+```text id="7w3q5m"
 ftp://www.google.com
-
 ```
 
+### Expected Output
 
-
-\#### Expected Output
-
-
-
-```text
-
+```text id="4p8y1d"
 FormatException
-
 ```
 
+### Purpose
 
+Verifies that the parser throws a `FormatException` when an unsupported protocol is provided.
 
-\#### Purpose
+---
 
-
-
-Verifies that the parser throws a FormatException when an unsupported protocol is supplied.
-
-
-
-\---
-
-
-
-\## Single Assertion Rule
-
-
+# Single Assertion Rule
 
 Each test method contains only one assertion.
 
+### Example
 
-
-Example:
-
-
-
-```csharp
-
+```csharp id="8q2v6m"
 Assert.That(result,
-
-&#x20;           Is.EqualTo("www.google.com"));
-
+            Is.EqualTo("www.google.com"));
 ```
 
+This improves readability and makes test failures easier to identify.
 
+---
 
-This improves readability and makes failures easier to identify.
+# Assertion Style Used
 
+## NUnit Constraint Model
 
-
-\---
-
-
-
-\## Assertion Style Used
-
-
-
-NUnit Constraint Model:
-
-
-
-```csharp
-
+```csharp id="1h6z9p"
 Assert.That(actual,
-
-&#x20;           Is.EqualTo(expected));
-
+            Is.EqualTo(expected));
 ```
 
+---
 
+## Exception Assertion
 
-Exception Assertion:
-
-
-
-```csharp
-
+```csharp id="5t7m2x"
 Assert.That(
-
-&#x20;   () => parser.ParseHostName("ftp://www.google.com"),
-
-&#x20;   Throws.TypeOf<FormatException>());
-
+    () => parser.ParseHostName("ftp://www.google.com"),
+    Throws.TypeOf<FormatException>());
 ```
 
+---
 
-
-\---
-
-
-
-\## Test Execution
-
-
+# Test Execution
 
 All test cases were executed using NUnit Test Explorer.
 
+## Initial Test Result
 
-
-\### Initial Test Result
-
-
-
-```text
-
+```text id="9q1w4v"
 3 Tests Passed
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Breaking the Application
-
-
+# Breaking the Application
 
 To verify the effectiveness of the tests, the source code was intentionally modified.
 
+## Original Code
 
-
-Original Code:
-
-
-
-```csharp
-
+```csharp id="0x5m8n"
 return hostName;
-
 ```
 
+## Modified Code
 
-
-Modified Code:
-
-
-
-```csharp
-
+```csharp id="3v6p2r"
 return "BrokenHost";
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Observed Result
-
-
+# Observed Result
 
 After modifying the source code and rerunning the tests:
 
-
-
-```text
-
+```text id="6z4n1q"
 Valid URL Tests Failed
-
 Invalid Protocol Test Passed
-
 ```
 
+This confirms that the automated tests are capable of detecting defects in the application.
 
+---
 
-This confirms that the tests are capable of detecting defects in the application.
-
-
-
-\---
-
-
-
-\## Restoring the Application
-
-
+# Restoring the Application
 
 The original implementation was restored:
 
-
-
-```csharp
-
+```csharp id="2k7m5x"
 return hostName;
-
 ```
-
-
 
 Tests were executed again.
 
+## Final Result
 
-
-\### Final Result
-
-
-
-```text
-
+```text id="8n3p6v"
 All Tests Passed Successfully
-
 ```
 
+---
 
+# Conclusion
 
-\---
-
-
-
-\## Conclusion
-
-
-
-The ParseHostName functionality was successfully tested using NUnit.
-
-
+The `ParseHostName` functionality was successfully tested using NUnit.
 
 The following concepts were demonstrated:
 
-
-
-\* NUnit Test Project Creation
-
-\* NUnit Custom Attributes
-
-\* Assert.That()
-
-\* Exception Testing
-
-\* Single Assertion Rule
-
-\* Naming Conventions for Test Methods
-
-\* Defect Detection Through Automated Tests
-
-
+* NUnit Test Project Creation.
+* NUnit Custom Attributes.
+* `Assert.That()`.
+* Exception Testing.
+* Single Assertion Rule.
+* Naming conventions for test methods.
+* Defect detection through automated testing.
 
 All objectives of the exercise were completed successfully.
-
-
-
