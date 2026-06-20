@@ -1,688 +1,347 @@
-\# Exercise05\_NUnitCollectionsTesting
+# Exercise05_NUnitCollectionsTesting
 
+## Objective
 
+This lab demonstrates how to write automated unit tests using the NUnit framework and use NUnit attributes to identify and execute test cases.
 
-\## Objective
+The exercise also demonstrates the usage of **CollectionAssert** for validating collections and verifying collection contents.
 
+---
 
+# Project Details
 
-This lab demonstrates how to write automated unit tests using the NUnit framework and use NUnit custom attributes to identify tests.
+## Source Project
 
+**CollectionsLib**
 
+---
 
-The exercise also demonstrates the usage of \*\*CollectionAssert\*\* for validating collections and verifying collection contents.
-
-
-
-\---
-
-
-
-\## Project Details
-
-
-
-\### Source Project
-
-
-
-\*\*CollectionsLib\*\*
-
-
-
-\### System Under Test (SUT)
-
-
+## System Under Test (SUT)
 
 ```csharp
-
 EmployeeManager
-
 ```
 
+---
 
-
-\### Methods Under Test
-
-
+## Methods Under Test
 
 ```csharp
-
 GetEmployees()
 
-
-
 GetEmployeesWhoJoinedInPreviousYears()
-
 ```
 
+---
 
+# Test Project
 
-\---
-
-
-
-\## Test Project
-
-
-
-Project Name:
-
-
+## Project Name
 
 ```text
-
 CollectionsLib.Tests
-
 ```
 
-
-
-Test Class Name:
-
-
+## Test Class Name
 
 ```text
-
 EmployeeManagerTests
-
 ```
 
-
-
-Naming Convention Used:
-
-
+## Naming Convention Used
 
 ```text
-
-UnitUnderTest\_Scenario\_ExpectedOutcome
-
+UnitUnderTest_Scenario_ExpectedOutcome
 ```
 
-
-
-Examples:
-
-
+### Examples
 
 ```text
+GetEmployees_NoNullEmployees_ReturnsCollectionWithoutNullValues
 
-GetEmployees\_NoNullEmployees\_ReturnsCollectionWithoutNullValues
+GetEmployees_Employee100Exists_ReturnsTrue
 
+GetEmployees_AllEmployeeIdsAreUnique_ReturnsTrue
 
-
-GetEmployees\_Employee100Exists\_ReturnsTrue
-
-
-
-GetEmployees\_AllEmployeeIdsAreUnique\_ReturnsTrue
-
-
-
-GetEmployeesAndPreviousYearEmployees\_CollectionsAreEqual
-
+GetEmployeesAndPreviousYearEmployees_CollectionsAreEqual
 ```
 
+---
 
+# NUnit Features Demonstrated
 
-\---
+## [Test] Attribute
 
+The `[Test]` attribute is used to identify a method as an NUnit test case.
 
-
-\## NUnit Features Demonstrated
-
-
-
-\### \[Test] Attribute
-
-
-
-Used to identify a method as a test case.
-
-
-
-Example:
-
-
+### Example
 
 ```csharp
-
-\[Test]
-
-public void GetEmployees\_Employee100Exists\_ReturnsTrue()
-
+[Test]
+public void GetEmployees_Employee100Exists_ReturnsTrue()
 {
-
 }
-
 ```
 
+---
 
+# CollectionAssert
 
-\---
+The lab demonstrates the use of `CollectionAssert` to compare collections.
 
-
-
-\## CollectionAssert
-
-
-
-The lab demonstrates the use of CollectionAssert to compare collections.
-
-
-
-Example:
-
-
+### Example
 
 ```csharp
-
 CollectionAssert.AreEquivalent(
-
-&#x20;   employees,
-
-&#x20;   previousEmployees);
-
+    employees,
+    previousEmployees);
 ```
 
+---
 
+# Employee Class Modification
 
-\---
-
-
-
-\## Employee Class Modification
-
-
-
-To support comparison of Employee objects based on Employee ID, the following methods were overridden:
-
-
+To support comparison of `Employee` objects based on Employee ID, the following methods were overridden:
 
 ```csharp
-
 public override bool Equals(object obj)
-
 {
+    Employee employee = obj as Employee;
 
-&#x20;   Employee employee = obj as Employee;
+    if (employee == null)
+        return false;
 
-
-
-&#x20;   if (employee == null)
-
-&#x20;       return false;
-
-
-
-&#x20;   return this.EmpId == employee.EmpId;
-
+    return this.EmpId == employee.EmpId;
 }
-
-
 
 public override int GetHashCode()
-
 {
-
-&#x20;   return EmpId.GetHashCode();
-
+    return EmpId.GetHashCode();
 }
-
 ```
 
+This allows collection comparisons to correctly identify equivalent employee objects.
 
+---
 
-This allows collection comparisons to be performed correctly.
+# Test Cases Implemented
 
+## 1. GetEmployees_NoNullEmployees_ReturnsCollectionWithoutNullValues
 
-
-\---
-
-
-
-\## Test Cases Implemented
-
-
-
-\### 1. GetEmployees\_NoNullEmployees\_ReturnsCollectionWithoutNullValues
-
-
-
-\#### Purpose
-
-
+### Purpose
 
 Verifies that the employee collection does not contain any null values.
 
-
-
-\#### Assertion Used
-
-
+### Assertion Used
 
 ```csharp
-
 Assert.That(
-
-&#x20;   employees,
-
-&#x20;   Has.None.Null);
-
+    employees,
+    Has.None.Null);
 ```
 
+---
 
+## 2. GetEmployees_Employee100Exists_ReturnsTrue
 
-\---
+### Purpose
 
+Verifies that an employee with Employee ID `100` exists in the collection.
 
-
-\### 2. GetEmployees\_Employee100Exists\_ReturnsTrue
-
-
-
-\#### Purpose
-
-
-
-Verifies that an employee with Employee ID 100 exists in the collection.
-
-
-
-\#### Assertion Used
-
-
+### Assertion Used
 
 ```csharp
-
 Assert.That(
-
-&#x20;   employees.Any(e => e.EmpId == 100),
-
-&#x20;   Is.True);
-
+    employees.Any(e => e.EmpId == 100),
+    Is.True);
 ```
 
+---
 
+## 3. GetEmployees_AllEmployeeIdsAreUnique_ReturnsTrue
 
-\---
-
-
-
-\### 3. GetEmployees\_AllEmployeeIdsAreUnique\_ReturnsTrue
-
-
-
-\#### Purpose
-
-
+### Purpose
 
 Verifies that all employees have unique Employee IDs.
 
+A collection is considered unique when no two employees contain the same Employee ID.
 
-
-A collection is considered unique when no two employees have the same Employee ID.
-
-
-
-\#### Assertion Used
-
-
+### Assertion Used
 
 ```csharp
-
 Assert.That(
-
-&#x20;   employees.Select(e => e.EmpId)
-
-&#x20;            .Distinct()
-
-&#x20;            .Count(),
-
-&#x20;   Is.EqualTo(employees.Count));
-
+    employees.Select(e => e.EmpId)
+             .Distinct()
+             .Count(),
+    Is.EqualTo(employees.Count));
 ```
 
+---
 
+## 4. GetEmployeesAndPreviousYearEmployees_CollectionsAreEqual
 
-\---
-
-
-
-\### 4. GetEmployeesAndPreviousYearEmployees\_CollectionsAreEqual
-
-
-
-\#### Purpose
-
-
+### Purpose
 
 Verifies that both collections contain the same employee objects.
 
-
-
-Methods Compared:
-
-
+### Methods Compared
 
 ```csharp
-
 GetEmployees()
 
-
-
 GetEmployeesWhoJoinedInPreviousYears()
-
 ```
 
+Since all employees joined before the current date, both collections contain the same employee records.
 
-
-Since all employees joined before the current date, both collections contain the same employees.
-
-
-
-\#### Assertion Used
-
-
+### Assertion Used
 
 ```csharp
-
 CollectionAssert.AreEquivalent(
-
-&#x20;   employees,
-
-&#x20;   previousEmployees);
-
+    employees,
+    previousEmployees);
 ```
 
+---
 
+# Single Assertion Rule
 
-\---
+Each test method contains only one assertion.
 
-
-
-\## Single Assertion Rule
-
-
-
-Each test method contains a single assertion.
-
-
-
-Examples:
-
-
+### Examples
 
 ```csharp
-
 Assert.That(
-
-&#x20;   employees.Any(e => e.EmpId == 100),
-
-&#x20;   Is.True);
-
+    employees.Any(e => e.EmpId == 100),
+    Is.True);
 ```
-
-
 
 ```csharp
-
 CollectionAssert.AreEquivalent(
-
-&#x20;   employees,
-
-&#x20;   previousEmployees);
-
+    employees,
+    previousEmployees);
 ```
-
-
 
 This improves readability and makes test failures easier to diagnose.
 
+---
 
-
-\---
-
-
-
-\## Test Execution
-
-
+# Test Execution
 
 All test cases were executed using NUnit Test Explorer.
 
-
-
-\### Initial Test Result
-
-
+## Initial Test Result
 
 ```text
-
 4 Tests Passed
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Breaking the Application
-
-
+# Breaking the Application
 
 To verify that the tests can detect defects, the source code was intentionally modified.
 
-
-
-\### Original Data
-
-
+## Original Data
 
 ```csharp
-
 new Employee
-
 {
-
-&#x20;   EmpId = 100,
-
-&#x20;   EmpName = "John"
-
+    EmpId = 100,
+    EmpName = "John"
 }
-
 ```
 
-
-
-\### Modified Data
-
-
+## Modified Data
 
 ```csharp
-
 new Employee
-
 {
-
-&#x20;   EmpId = 101,
-
-&#x20;   EmpName = "John"
-
+    EmpId = 101,
+    EmpName = "John"
 }
-
 ```
 
+This modification introduced an incorrect Employee ID.
 
+---
 
-This introduced a duplicate Employee ID.
-
-
-
-\---
-
-
-
-\## Observed Result
-
-
+# Observed Result
 
 After modifying the source code and rerunning the tests:
 
-
-
-\### Failed Tests
-
-
+## Failed Tests
 
 ```text
+GetEmployees_Employee100Exists_ReturnsTrue
 
-GetEmployees\_Employee100Exists\_ReturnsTrue
-
-
-
-GetEmployees\_AllEmployeeIdsAreUnique\_ReturnsTrue
-
+GetEmployees_AllEmployeeIdsAreUnique_ReturnsTrue
 ```
 
-
-
-\### Passed Tests
-
-
+## Passed Tests
 
 ```text
+GetEmployees_NoNullEmployees_ReturnsCollectionWithoutNullValues
 
-GetEmployees\_NoNullEmployees\_ReturnsCollectionWithoutNullValues
-
-
-
-GetEmployeesAndPreviousYearEmployees\_CollectionsAreEqual
-
+GetEmployeesAndPreviousYearEmployees_CollectionsAreEqual
 ```
 
-
-
-\### Result
-
-
+## Result
 
 ```text
-
 2 Failed
-
 2 Passed
-
 ```
 
+This confirms that the test suite is capable of detecting defects introduced into the application.
 
+---
 
-This confirms that the test suite is capable of detecting defects in the application.
-
-
-
-\---
-
-
-
-\## Restoring the Application
-
-
+# Restoring the Application
 
 The Employee ID was restored to its original value.
 
-
-
-\### Restored Data
-
-
+## Restored Data
 
 ```csharp
-
 EmpId = 100
-
 ```
-
-
 
 All tests were executed again.
 
-
-
-\### Final Result
-
-
+## Final Result
 
 ```text
-
 4 Tests Passed Successfully
-
 ```
 
+---
 
+# Concepts Demonstrated
 
-\---
+* NUnit Test Project Creation.
+* NUnit Custom Attributes.
+* `Assert.That()`.
+* `CollectionAssert`.
+* Collection validation.
+* Object equality using `Equals()` and `GetHashCode()`.
+* Single Assertion Rule.
+* Collection comparison.
+* Defect detection through automated testing.
 
+---
 
+# Conclusion
 
-\## Concepts Demonstrated
-
-
-
-\* NUnit Test Project Creation
-
-\* NUnit Custom Attributes
-
-\* Assert.That()
-
-\* CollectionAssert
-
-\* Collection Validation
-
-\* Object Equality using Equals() and GetHashCode()
-
-\* Single Assertion Rule
-
-\* Collection Comparison
-
-\* Defect Detection Through Automated Testing
-
-
-
-\---
-
-
-
-\## Conclusion
-
-
-
-The EmployeeManager functionality was successfully tested using NUnit.
-
-
+The `EmployeeManager` functionality was successfully tested using NUnit.
 
 The tests verified:
 
+* Absence of null values in collections.
+* Existence of a specific employee.
+* Uniqueness of employee records.
+* Equality of employee collections.
 
-
-\* Absence of null values in collections
-
-\* Existence of a specific employee
-
-\* Uniqueness of employee records
-
-\* Equality of employee collections
-
-
-
-CollectionAssert was successfully demonstrated, and the test suite effectively detected intentionally introduced defects.
-
-
+`CollectionAssert` was successfully demonstrated, and the test suite effectively detected intentionally introduced defects.
 
 All objectives of the exercise were completed successfully.
-
-
-
