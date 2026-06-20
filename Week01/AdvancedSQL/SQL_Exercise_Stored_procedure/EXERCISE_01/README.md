@@ -1,392 +1,215 @@
-\# SQL Stored Procedures
+# SQL Stored Procedures
 
+## Objective
 
-
-\## Objective
-
-
-
-The objective of this exercise is to understand how stored procedures are used in SQL Server to encapsulate reusable database operations.
-
-
+The objective of this exercise is to understand how **Stored Procedures** are used in SQL Server to encapsulate reusable database operations.
 
 This exercise focuses on:
 
+* Creating Stored Procedures
+* Using Input Parameters
+* Retrieving Data using Stored Procedures
+* Inserting Data using Stored Procedures
+* Improving Code Reusability and Maintainability
 
+---
 
-\* Creating Stored Procedures
+# Database Schema
 
-\* Using Input Parameters
+The exercise uses an **Employee Management System** consisting of two tables:
 
-\* Retrieving Data with Stored Procedures
-
-\* Inserting Data with Stored Procedures
-
-\* Improving Code Reusability and Maintainability
-
-
-
-\---
-
-
-
-\## Database Schema
-
-
-
-The exercise uses an Employee Management System consisting of two tables:
-
-
-
-\### Departments
-
-
+## Departments
 
 Stores department information.
 
-
-
 | Column         | Description                  |
-
 | -------------- | ---------------------------- |
-
 | DepartmentID   | Unique department identifier |
-
 | DepartmentName | Name of the department       |
 
+---
 
-
-\### Employees
-
-
+## Employees
 
 Stores employee information.
 
-
-
 | Column       | Description                |
-
 | ------------ | -------------------------- |
-
 | EmployeeID   | Unique employee identifier |
-
 | FirstName    | Employee first name        |
-
 | LastName     | Employee last name         |
-
 | DepartmentID | Department reference       |
-
 | Salary       | Employee salary            |
-
 | JoinDate     | Employee joining date      |
 
+---
 
+# Retrieve Employees by Department
 
-\---
+## Goal
 
+Create a stored procedure that accepts a `DepartmentID` as input and returns all employees belonging to that department.
 
+---
 
-\## Retrieve Employees by Department
-
-
-
-\### Goal
-
-
-
-Create a stored procedure that accepts a DepartmentID as input and returns employees belonging to that department.
-
-
-
-\### Stored Procedure
-
-
+## Stored Procedure
 
 ```sql
-
-CREATE PROCEDURE sp\_GetEmployeesByDepartment
-
-&#x20;   @DepartmentID INT
-
+CREATE PROCEDURE sp_GetEmployeesByDepartment
+    @DepartmentID INT
 AS
-
 BEGIN
 
-
-
-&#x20;   SELECT
-
-&#x20;       EmployeeID,
-
-&#x20;       FirstName,
-
-&#x20;       LastName,
-
-&#x20;       DepartmentID,
-
-&#x20;       Salary,
-
-&#x20;       JoinDate
-
-&#x20;   FROM Employees
-
-&#x20;   WHERE DepartmentID = @DepartmentID;
-
-
+    SELECT
+        EmployeeID,
+        FirstName,
+        LastName,
+        DepartmentID,
+        Salary,
+        JoinDate
+    FROM Employees
+    WHERE DepartmentID = @DepartmentID;
 
 END;
-
 ```
 
+---
 
-
-\### Execution
-
-
+## Execution
 
 ```sql
-
-EXEC sp\_GetEmployeesByDepartment @DepartmentID = 3;
-
+EXEC sp_GetEmployeesByDepartment @DepartmentID = 3;
 ```
 
+---
 
-
-\### Observation
-
-
+## Observation
 
 The procedure successfully returned all employees belonging to the specified department.
 
+---
 
-
-\### Key Learning
-
-
+## Key Learning
 
 Using parameters makes stored procedures reusable because the same procedure can be executed with different department values without modifying the SQL query.
 
+---
 
+# Insert Employee Using Stored Procedure
 
-\---
+## Goal
 
+Create a stored procedure that inserts a new employee record into the `Employees` table.
 
+---
 
-\## Insert Employee Using Stored Procedure
-
-
-
-\### Goal
-
-
-
-Create a stored procedure that inserts a new employee record into the Employees table.
-
-
-
-\### Stored Procedure
-
-
+## Stored Procedure
 
 ```sql
-
-CREATE PROCEDURE sp\_InsertEmployee
-
-&#x20;   @EmployeeID INT,
-
-&#x20;   @FirstName VARCHAR(50),
-
-&#x20;   @LastName VARCHAR(50),
-
-&#x20;   @DepartmentID INT,
-
-&#x20;   @Salary DECIMAL(10,2),
-
-&#x20;   @JoinDate DATE
-
+CREATE PROCEDURE sp_InsertEmployee
+    @EmployeeID INT,
+    @FirstName VARCHAR(50),
+    @LastName VARCHAR(50),
+    @DepartmentID INT,
+    @Salary DECIMAL(10,2),
+    @JoinDate DATE
 AS
-
 BEGIN
 
-
-
-&#x20;   INSERT INTO Employees
-
-&#x20;   (
-
-&#x20;       EmployeeID,
-
-&#x20;       FirstName,
-
-&#x20;       LastName,
-
-&#x20;       DepartmentID,
-
-&#x20;       Salary,
-
-&#x20;       JoinDate
-
-&#x20;   )
-
-&#x20;   VALUES
-
-&#x20;   (
-
-&#x20;       @EmployeeID,
-
-&#x20;       @FirstName,
-
-&#x20;       @LastName,
-
-&#x20;       @DepartmentID,
-
-&#x20;       @Salary,
-
-&#x20;       @JoinDate
-
-&#x20;   );
-
-
+    INSERT INTO Employees
+    (
+        EmployeeID,
+        FirstName,
+        LastName,
+        DepartmentID,
+        Salary,
+        JoinDate
+    )
+    VALUES
+    (
+        @EmployeeID,
+        @FirstName,
+        @LastName,
+        @DepartmentID,
+        @Salary,
+        @JoinDate
+    );
 
 END;
-
 ```
 
+---
 
-
-\### Execution
-
-
+## Execution
 
 ```sql
-
-EXEC sp\_InsertEmployee
-
-&#x20;   @EmployeeID = 5,
-
-&#x20;   @FirstName = 'Bruce',
-
-&#x20;   @LastName = 'Wayne',
-
-&#x20;   @DepartmentID = 3,
-
-&#x20;   @Salary = 9000.00,
-
-&#x20;   @JoinDate = '2024-01-10';
-
+EXEC sp_InsertEmployee
+    @EmployeeID = 5,
+    @FirstName = 'Bruce',
+    @LastName = 'Wayne',
+    @DepartmentID = 3,
+    @Salary = 9000.00,
+    @JoinDate = '2024-01-10';
 ```
 
+---
 
-
-\### Verification
-
-
+## Verification
 
 ```sql
-
-SELECT \* FROM Employees;
-
+SELECT * FROM Employees;
 ```
 
+---
 
+## Observation
 
-\### Observation
+The new employee record was successfully inserted into the `Employees` table.
 
+---
 
-
-The new employee record was successfully inserted into the Employees table.
-
-
-
-\### Key Learning
-
-
+## Key Learning
 
 Stored procedures can be used to centralize data modification operations, reducing repetitive SQL code and improving maintainability.
 
+---
 
+# Advantages of Stored Procedures
 
-\---
+* Reusable database logic.
+* Reduced code duplication.
+* Easier maintenance.
+* Improved security through parameterized execution.
+* Better organization of business logic.
+* Consistent database operations.
 
+---
 
+# Practical Understanding
 
-\## Advantages of Stored Procedures
-
-
-
-\* Reusable database logic
-
-\* Reduced code duplication
-
-\* Easier maintenance
-
-\* Improved security through parameterized execution
-
-\* Better organization of business logic
-
-\* Consistent database operations
-
-
-
-\---
-
-
-
-\## Practical Understanding
-
-
-
-A stored procedure is a precompiled collection of SQL statements stored in the database and executed whenever needed.
-
-
+A stored procedure is a precompiled collection of SQL statements stored in the database and executed whenever required.
 
 Instead of repeatedly writing the same SQL queries, developers can store the logic once and execute it multiple times using different parameter values.
 
-
-
 In this exercise:
 
-
-
-\* `sp\_GetEmployeesByDepartment` retrieves employee information based on a department.
-
-\* `sp\_InsertEmployee` inserts new employee records into the database.
-
-
+* `sp_GetEmployeesByDepartment` retrieves employee information based on a department.
+* `sp_InsertEmployee` inserts new employee records into the database.
 
 This approach improves code readability, maintainability, and consistency across applications.
 
+---
 
-
-\---
-
-
-
-\## Conclusion
-
-
+# Conclusion
 
 This exercise demonstrated the creation and execution of stored procedures in SQL Server.
 
-
-
 The following concepts were explored:
 
-
-
-\* Creating stored procedures
-
-\* Using input parameters
-
-\* Retrieving records through stored procedures
-
-\* Inserting records through stored procedures
-
-\* Reusing database logic
-
-
+* Creating stored procedures.
+* Using input parameters.
+* Retrieving records through stored procedures.
+* Inserting records through stored procedures.
+* Reusing database logic.
 
 Stored procedures are widely used in enterprise applications because they simplify database operations, improve maintainability, and help enforce consistent business rules.
-
-
-
