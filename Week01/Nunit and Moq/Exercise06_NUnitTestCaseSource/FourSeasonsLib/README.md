@@ -1,654 +1,334 @@
-\# Exercise06\_NUnitTestCaseSource
+# Exercise06_NUnitTestCaseSource
 
+## Objective
 
+This lab demonstrates how to write automated unit tests using the NUnit framework and use the **TestCaseSource** attribute to reduce repetitive test code.
 
-\## Objective
+The exercise also demonstrates multiple approaches for supplying test data using `TestCaseSource` and follows the Single Assertion Rule using `Assert.That()`.
 
+---
 
+# Project Details
 
-This lab demonstrates how to write automated unit tests using the NUnit framework and how to use the \*\*TestCaseSource\*\* attribute to reduce repetitive test code.
+## Source Project
 
+**SeasonsLib**
 
+---
 
-The exercise also demonstrates multiple approaches to supplying test data using TestCaseSource and follows the Single Assertion Rule using `Assert.That()`.
+## System Under Test (SUT)
 
-
-
-\---
-
-
-
-\## Project Details
-
-
-
-\### Source Project
-
-
-
-SeasonsLib
-
-
-
-\### System Under Test (SUT)
-
-
-
-```csharp
-
+```csharp id="9j2m5x"
 SeasonTeller
-
 ```
 
+---
 
+## Method Under Test
 
-\### Method Under Test
-
-
-
-```csharp
-
+```csharp id="4v8q1n"
 DisplaySeasonBy(string monthName)
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Business Scenario
-
-
+# Business Scenario
 
 The application accepts a month name and returns the corresponding season.
 
-
-
 | Season  | Months                  |
-
 | ------- | ----------------------- |
-
 | Spring  | February, March         |
-
 | Summer  | April, May, June        |
-
 | Monsoon | July, August, September |
-
 | Autumn  | October, November       |
-
 | Winter  | December, January       |
-
-
 
 If an invalid month is supplied, the method returns:
 
-
-
-```text
-
+```text id="6m3p8q"
 Invalid Season
-
 ```
 
+---
 
+# Test Project
 
-\---
+## Project Name
 
-
-
-\## Test Project
-
-
-
-Project Name:
-
-
-
-```text
-
+```text id="2x7n4m"
 SeasonsLib.Tests
-
 ```
 
+## Test Class Name
 
-
-Test Class Name:
-
-
-
-```text
-
+```text id="8q5v1p"
 SeasonTellerTests
-
 ```
 
+## Naming Convention Used
 
-
-Naming Convention Used:
-
-
-
-```text
-
-UnitUnderTest\_Scenario\_ExpectedOutcome
-
+```text id="1m9x6q"
+UnitUnderTest_Scenario_ExpectedOutcome
 ```
 
+### Examples
 
+```text id="7v3k2n"
+DisplaySeasonBy_ValidMonth_ReturnsExpectedSeason
 
-Examples:
-
-
-
-```text
-
-DisplaySeasonBy\_ValidMonth\_ReturnsExpectedSeason
-
-
-
-DisplaySeasonBy\_AlternateTestCaseSource\_ReturnsExpectedSeason
-
+DisplaySeasonBy_AlternateTestCaseSource_ReturnsExpectedSeason
 ```
 
+---
 
+# NUnit Features Demonstrated
 
-\---
+## [TestCaseSource]
 
+The `TestCaseSource` attribute allows multiple test inputs to be supplied to a single test method, reducing duplicate test code.
 
+### Example
 
-\## NUnit Features Demonstrated
-
-
-
-\### \[TestCaseSource]
-
-
-
-The TestCaseSource attribute allows multiple test inputs to be supplied to a single test method, reducing code duplication.
-
-
-
-Example:
-
-
-
-```csharp
-
-\[TestCaseSource(nameof(SeasonData))]
-
+```csharp id="5n8m2v"
+[TestCaseSource(nameof(SeasonData))]
 ```
 
+## Benefits
 
+* Reduces repetitive test methods.
+* Improves maintainability.
+* Simplifies adding new test cases.
+* Improves test readability.
 
-Benefits:
+---
 
+# Approach 1 – TestCaseData with IEnumerable
 
+The first approach uses `IEnumerable` with `TestCaseData` objects.
 
-\* Reduces repetitive test methods
+## Test Data Source
 
-\* Improves maintainability
-
-\* Simplifies adding new test cases
-
-\* Improves readability
-
-
-
-\---
-
-
-
-\# Approach 1 – TestCaseData with IEnumerable
-
-
-
-The first approach uses `IEnumerable` and `TestCaseData`.
-
-
-
-```csharp
-
+```csharp id="3q7x9m"
 public static IEnumerable SeasonData
-
 {
+    get
+    {
+        yield return new TestCaseData("February", "Spring");
+        yield return new TestCaseData("March", "Spring");
 
-&#x20;   get
+        yield return new TestCaseData("April", "Summer");
+        yield return new TestCaseData("May", "Summer");
+        yield return new TestCaseData("June", "Summer");
 
-&#x20;   {
+        yield return new TestCaseData("July", "Monsoon");
+        yield return new TestCaseData("August", "Monsoon");
+        yield return new TestCaseData("September", "Monsoon");
 
-&#x20;       yield return new TestCaseData("February", "Spring");
+        yield return new TestCaseData("October", "Autumn");
+        yield return new TestCaseData("November", "Autumn");
 
-&#x20;       yield return new TestCaseData("March", "Spring");
+        yield return new TestCaseData("December", "Winter");
+        yield return new TestCaseData("January", "Winter");
 
-
-
-&#x20;       yield return new TestCaseData("April", "Summer");
-
-&#x20;       yield return new TestCaseData("May", "Summer");
-
-&#x20;       yield return new TestCaseData("June", "Summer");
-
-
-
-&#x20;       yield return new TestCaseData("July", "Monsoon");
-
-&#x20;       yield return new TestCaseData("August", "Monsoon");
-
-&#x20;       yield return new TestCaseData("September", "Monsoon");
-
-
-
-&#x20;       yield return new TestCaseData("October", "Autumn");
-
-&#x20;       yield return new TestCaseData("November", "Autumn");
-
-
-
-&#x20;       yield return new TestCaseData("December", "Winter");
-
-&#x20;       yield return new TestCaseData("January", "Winter");
-
-
-
-&#x20;       yield return new TestCaseData("Batman", "Invalid Season");
-
-&#x20;   }
-
+        yield return new TestCaseData("Batman", "Invalid Season");
+    }
 }
-
 ```
 
+## Test Method
 
-
-Test Method:
-
-
-
-```csharp
-
-\[TestCaseSource(nameof(SeasonData))]
-
-public void DisplaySeasonBy\_ValidMonth\_ReturnsExpectedSeason(
-
-&#x20;   string month,
-
-&#x20;   string expected)
-
+```csharp id="6p4z8m"
+[TestCaseSource(nameof(SeasonData))]
+public void DisplaySeasonBy_ValidMonth_ReturnsExpectedSeason(
+    string month,
+    string expected)
 {
+    SeasonTeller teller = new SeasonTeller();
 
-&#x20;   SeasonTeller teller = new SeasonTeller();
+    string actual = teller.DisplaySeasonBy(month);
 
-
-
-&#x20;   string actual =
-
-&#x20;       teller.DisplaySeasonBy(month);
-
-
-
-&#x20;   Assert.That(actual, Is.EqualTo(expected));
-
+    Assert.That(actual, Is.EqualTo(expected));
 }
-
 ```
 
+---
 
+# Approach 2 – Object Array TestCaseSource
 
-\---
+The second approach uses an object array as the data source.
 
+## Test Data Source
 
-
-\# Approach 2 – Object Array TestCaseSource
-
-
-
-The second approach uses an object array.
-
-
-
-```csharp
-
-public static object\[] AlternateSeasonData =
-
+```csharp id="9v2m5x"
+public static object[] AlternateSeasonData =
 {
-
-&#x20;   new object\[] { "February", "Spring" },
-
-&#x20;   new object\[] { "April", "Summer" },
-
-&#x20;   new object\[] { "July", "Monsoon" },
-
-&#x20;   new object\[] { "October", "Autumn" },
-
-&#x20;   new object\[] { "December", "Winter" },
-
-&#x20;   new object\[] { "XYZ", "Invalid Season" }
-
+    new object[] { "February", "Spring" },
+    new object[] { "April", "Summer" },
+    new object[] { "July", "Monsoon" },
+    new object[] { "October", "Autumn" },
+    new object[] { "December", "Winter" },
+    new object[] { "XYZ", "Invalid Season" }
 };
-
 ```
 
+## Test Method
 
-
-Test Method:
-
-
-
-```csharp
-
-\[TestCaseSource(nameof(AlternateSeasonData))]
-
-public void DisplaySeasonBy\_AlternateTestCaseSource\_ReturnsExpectedSeason(
-
-&#x20;   string month,
-
-&#x20;   string expected)
-
+```csharp id="4m8q1v"
+[TestCaseSource(nameof(AlternateSeasonData))]
+public void DisplaySeasonBy_AlternateTestCaseSource_ReturnsExpectedSeason(
+    string month,
+    string expected)
 {
+    SeasonTeller teller = new SeasonTeller();
 
-&#x20;   SeasonTeller teller = new SeasonTeller();
+    string actual = teller.DisplaySeasonBy(month);
 
-
-
-&#x20;   string actual =
-
-&#x20;       teller.DisplaySeasonBy(month);
-
-
-
-&#x20;   Assert.That(actual, Is.EqualTo(expected));
-
+    Assert.That(actual, Is.EqualTo(expected));
 }
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Single Assertion Rule
-
-
+# Single Assertion Rule
 
 Each test method contains only one assertion.
 
+### Example
 
-
-Example:
-
-
-
-```csharp
-
+```csharp id="1x6q9m"
 Assert.That(
-
-&#x20;   actual,
-
-&#x20;   Is.EqualTo(expected));
-
+    actual,
+    Is.EqualTo(expected));
 ```
 
+This makes failures easier to identify and improves test maintenance.
 
+---
 
-This makes failures easier to identify and maintain.
-
-
-
-\---
-
-
-
-\## Test Execution
-
-
+# Test Execution
 
 All tests were executed using NUnit Test Explorer.
 
+## Initial Result
 
-
-\### Initial Result
-
-
-
-```text
-
+```text id="7n3m8q"
 All Tests Passed
-
 ```
-
-
 
 The tests verified:
 
+* Spring months.
+* Summer months.
+* Monsoon months.
+* Autumn months.
+* Winter months.
+* Invalid month inputs.
 
+---
 
-\* Spring months
-
-\* Summer months
-
-\* Monsoon months
-
-\* Autumn months
-
-\* Winter months
-
-\* Invalid month inputs
-
-
-
-\---
-
-
-
-\## Breaking the Application
-
-
+# Breaking the Application
 
 To verify the effectiveness of the tests, the source code was intentionally modified.
 
+## Original Code
 
-
-\### Original Code
-
-
-
-```csharp
-
+```csharp id="5q2v7n"
 seasonName = "Summer";
-
 ```
 
+## Modified Code
 
-
-\### Modified Code
-
-
-
-```csharp
-
+```csharp id="8m4x1p"
 seasonName = "Winter";
-
 ```
 
+The modification was made inside the April-May-June condition block.
 
+---
 
-inside the April-May-June condition block.
-
-
-
-\---
-
-
-
-\## Observed Result
-
-
+# Observed Result
 
 After modifying the source code and rerunning the tests:
 
-
-
 The following month tests failed:
 
-
-
-```text
-
+```text id="2n7m5x"
 April
 
 May
 
 June
-
 ```
 
+## Expected Output
 
-
-Expected:
-
-
-
-```text
-
+```text id="6v9q3m"
 Summer
-
 ```
 
+## Actual Output
 
-
-Actual:
-
-
-
-```text
-
+```text id="1p8x4n"
 Winter
-
 ```
-
-
 
 Several tests failed, proving that the test suite successfully detected defects in the application.
 
+---
 
+# Restoring the Application
 
-\---
+The original implementation was restored:
 
-
-
-\## Restoring the Application
-
-
-
-The original implementation was restored.
-
-
-
-```csharp
-
+```csharp id="3m7q9v"
 seasonName = "Summer";
-
 ```
-
-
 
 Tests were executed again.
 
+## Final Result
 
-
-\### Final Result
-
-
-
-```text
-
+```text id="9x5n2m"
 All Tests Passed Successfully
-
 ```
 
+---
 
+# Concepts Demonstrated
 
-\---
+* NUnit Test Project Creation.
+* NUnit Custom Attributes.
+* `TestCaseSource` Attribute.
+* `TestCaseData`.
+* `IEnumerable` Test Data Source.
+* Object Array Test Data Source.
+* `Assert.That()`.
+* Single Assertion Rule.
+* Data-driven testing.
+* Defect detection through automated testing.
 
+---
 
+# Advantages of TestCaseSource
 
-\## Concepts Demonstrated
+* Eliminates duplicate test methods.
+* Supports large volumes of test data.
+* Makes tests easier to maintain.
+* Improves readability.
+* Encourages data-driven testing.
 
+---
 
+# Conclusion
 
-\* NUnit Test Project Creation
+The `SeasonTeller` functionality was successfully tested using NUnit and `TestCaseSource`.
 
-\* NUnit Custom Attributes
+Two different `TestCaseSource` implementations were demonstrated:
 
-\* TestCaseSource Attribute
-
-\* TestCaseData
-
-\* IEnumerable Test Data Source
-
-\* Object Array Test Data Source
-
-\* Assert.That()
-
-\* Single Assertion Rule
-
-\* Data Driven Testing
-
-\* Defect Detection Through Automated Testing
-
-
-
-\---
-
-
-
-\## Advantages of TestCaseSource
-
-
-
-\* Eliminates duplicate test methods
-
-\* Supports large volumes of test data
-
-\* Makes tests easier to maintain
-
-\* Improves readability
-
-\* Encourages data-driven testing
-
-
-
-\---
-
-
-
-\## Conclusion
-
-
-
-The SeasonTeller functionality was successfully tested using NUnit and TestCaseSource.
-
-
-
-Two different TestCaseSource implementations were demonstrated:
-
-
-
-1\. IEnumerable with TestCaseData
-
-2\. Object Array Test Source
-
-
+1. `IEnumerable` with `TestCaseData`.
+2. Object Array Test Source.
 
 The tests successfully validated all season mappings and detected intentionally introduced defects.
 
-
-
 All objectives of the exercise were completed successfully.
-
-
-
