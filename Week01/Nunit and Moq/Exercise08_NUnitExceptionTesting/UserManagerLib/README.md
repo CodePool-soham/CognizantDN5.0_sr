@@ -1,590 +1,321 @@
-\# Exercise08\_NUnitExceptionTesting
+# Exercise08_NUnitExceptionTesting
 
+## Objective
 
-
-\## Objective
-
-
-
-This lab demonstrates how to write automated unit tests using the NUnit framework, with a focus on \*\*testing methods that throw exceptions\*\*.
-
-
+This lab demonstrates how to write automated unit tests using the NUnit framework, with a focus on **testing methods that throw exceptions**.
 
 The exercise also demonstrates:
 
+* Testing happy path scenarios.
+* Testing exception scenarios using NUnit.
+* Validating exception types and messages.
+* Using `Assert.That()` with constraint-based syntax.
 
+---
 
-\* Testing happy path scenarios
+# Project Details
 
-\* Testing exception scenarios using NUnit
+## Source Project
 
-\* Validating exception types and messages
+**UserManagerLib**
 
-\* Using `Assert.That()` with constraint-based syntax
+---
 
+## System Under Test (SUT)
 
-
-\---
-
-
-
-\## Project Details
-
-
-
-\### Source Project
-
-
-
-UserManagerLib
-
-
-
-\### System Under Test (SUT)
-
-
-
-```csharp id="u1s9ad"
-
+```csharp
 User
-
 ```
 
+---
 
+## Methods Under Test
 
-\### Methods Under Test
-
-
-
-```csharp id="k2m8qp"
-
+```csharp
 CreateUser(User user)
 
 ValidatePANCardNumber(string panCard)
-
 ```
 
+---
 
+# Business Rules
 
-\---
+## PAN Card Validation Rules
 
+A PAN Card number must satisfy the following conditions:
 
+* Must not be null or empty.
+* Must be exactly 10 characters long.
+* Must be mandatory during user creation.
 
-\## Business Rules
+---
 
-
-
-\### PAN Card Validation Rules
-
-
-
-A PAN Card number must satisfy the following:
-
-
-
-\* Must not be null or empty
-
-\* Must be exactly 10 characters long
-
-\* Must be mandatory during user creation
-
-
-
-\---
-
-
-
-\## Exception Rules
-
-
+# Exception Rules
 
 | Condition                 | Exception              |
-
 | ------------------------- | ---------------------- |
-
 | PAN Card is null or empty | NullReferenceException |
-
 | PAN Card length is not 10 | FormatException        |
 
+---
 
+# Test Project
 
-\---
+## Project Name
 
-
-
-\## Test Project
-
-
-
-\### Project Name
-
-
-
-```text id="p1q8xz"
-
+```text
 UserManagerLib.Tests
-
 ```
 
+## Test Class Name
 
-
-\### Test Class Name
-
-
-
-```text id="t8k3lm"
-
+```text
 UserTests
-
 ```
 
+## Naming Convention
 
-
-\### Naming Convention
-
-
-
-```text id="m4n7op"
-
-UnitUnderTest\_Scenario\_ExpectedOutcome
-
+```text
+UnitUnderTest_Scenario_ExpectedOutcome
 ```
 
+---
 
+# NUnit Features Demonstrated
 
-\---
-
-
-
-\## NUnit Features Demonstrated
-
-
-
-\### 1. Exception Testing
-
-
+## 1. Exception Testing
 
 NUnit provides built-in support for validating exceptions using:
 
-
-
-```csharp id="e9r2qw"
-
-Assert.That(() => methodCall, Throws.TypeOf<ExceptionType>());
-
+```csharp
+Assert.That(
+    () => methodCall,
+    Throws.TypeOf<ExceptionType>());
 ```
 
+---
 
+## 2. Assert.That Constraint Model
 
-\---
+All tests use the NUnit constraint-based assertion model instead of classic assertions.
 
+---
 
+# Test Cases Implemented
 
-\### 2. Assert.That Constraint Model
+## 1. Happy Path Test
 
+### Test Method
 
-
-All tests use constraint-based assertions instead of classic assertions.
-
-
-
-\---
-
-
-
-\## Test Cases Implemented
-
-
-
-\### 1. Happy Path Test
-
-
-
-\#### Test Method
-
-
-
-```csharp id="h1a2bc"
-
-CreateUser\_ValidPANCard\_DoesNotThrowException
-
+```text
+CreateUser_ValidPANCard_DoesNotThrowException
 ```
 
+### Purpose
 
+Ensures user creation works correctly when a valid PAN card is provided.
 
-\#### Purpose
+### Input
 
-
-
-Ensures user creation works when a valid PAN card is provided.
-
-
-
-\#### Input
-
-
-
-```text id="x3y9za"
-
+```text
 ABCDE1234F
-
 ```
 
+### Expected Result
 
-
-\#### Expected Result
-
-
-
-```text id="l6m2qp"
-
+```text
 No exception thrown
-
 ```
 
+### Assertion
 
-
-\#### Assertion
-
-
-
-```csharp id="a1b2c3"
-
+```csharp
 Assert.That(
-
-&#x20;   () => userManager.CreateUser(user),
-
-&#x20;   Throws.Nothing);
-
+    () => userManager.CreateUser(user),
+    Throws.Nothing);
 ```
 
+---
 
+## 2. Null PAN Card Exception Test
 
-\---
+### Test Method
 
-
-
-\### 2. Null PAN Card Exception Test
-
-
-
-\#### Test Method
-
-
-
-```csharp id="d4e5fg"
-
-CreateUser\_NullPANCard\_ThrowsNullReferenceException
-
+```text
+CreateUser_NullPANCard_ThrowsNullReferenceException
 ```
 
+### Purpose
 
+Verifies system behavior when the PAN card value is null.
 
-\#### Purpose
+### Expected Exception
 
-
-
-Verifies system behavior when PAN card is null.
-
-
-
-\#### Expected Exception
-
-
-
-```text id="p9q1rs"
-
+```text
 NullReferenceException
-
 ```
 
+### Assertion
 
-
-\#### Assertion
-
-
-
-```csharp id="z7x6cv"
-
+```csharp
 Assert.That(
-
-&#x20;   () => userManager.CreateUser(user),
-
-&#x20;   Throws.TypeOf<NullReferenceException>());
-
+    () => userManager.CreateUser(user),
+    Throws.TypeOf<NullReferenceException>());
 ```
 
+---
 
+## 3. Invalid PAN Length Test
 
-\---
+### Test Method
 
-
-
-\### 3. Invalid PAN Length Test
-
-
-
-\#### Test Method
-
-
-
-```csharp id="k8l9mn"
-
-CreateUser\_InvalidPANLength\_ThrowsFormatException
-
+```text
+CreateUser_InvalidPANLength_ThrowsFormatException
 ```
 
+### Purpose
 
+Ensures the system throws an exception when the PAN card length is not 10 characters.
 
-\#### Purpose
+### Input
 
-
-
-Ensures system throws exception when PAN length is not 10.
-
-
-
-\#### Input
-
-
-
-```text id="o2p3qr"
-
+```text
 ABC123
-
 ```
 
+### Expected Exception
 
-
-\#### Expected Exception
-
-
-
-```text id="t5u6vw"
-
+```text
 FormatException
-
 ```
 
+### Assertion
 
-
-\#### Assertion
-
-
-
-```csharp id="y7z8ab"
-
+```csharp
 Assert.That(
-
-&#x20;   () => userManager.CreateUser(user),
-
-&#x20;   Throws.TypeOf<FormatException>());
-
+    () => userManager.CreateUser(user),
+    Throws.TypeOf<FormatException>());
 ```
 
+---
 
+# Single Assertion Rule
 
-\---
+Each test method contains exactly one assertion.
 
+Example:
 
-
-\## Single Assertion Rule
-
-
-
-Each test method contains exactly one assertion:
-
-
-
-```csharp id="s1d2ef"
-
+```csharp
 Assert.That(...);
-
 ```
-
-
 
 This ensures:
 
+* Better readability.
+* Easier debugging.
+* Clear test failures.
 
+---
 
-\* Better readability
+# Test Execution
 
-\* Easier debugging
+All tests were executed using NUnit Test Explorer.
 
-\* Clear test failures
+## Initial Result
 
-
-
-\---
-
-
-
-\## Test Execution
-
-
-
-\### Initial Result
-
-
-
-```text id="g1h2ij"
-
+```text
 3 Tests Passed
-
 ```
 
+The test suite successfully verified:
 
+* Valid PAN card processing.
+* Null PAN card exception handling.
+* Invalid PAN length exception handling.
 
-\---
+---
 
-
-
-\## Breaking the Application
-
-
+# Breaking the Application
 
 To validate test effectiveness, the source code was intentionally modified.
 
+## Original Code
 
-
-\### Original Code
-
-
-
-```csharp id="k3l4mn"
-
+```csharp
 panCard.Length != 10
-
 ```
 
+## Modified Code
 
-
-\### Modified Code
-
-
-
-```csharp id="p5q6rs"
-
+```csharp
 panCard.Length != 8
-
 ```
 
+---
 
+# Observed Result After Modification
 
-\---
+## Failed Test
 
+```text
+CreateUser_ValidPANCard_DoesNotThrowException
+```
 
+## Reason
 
-\## Observed Result After Modification
+The valid PAN card:
 
+```text
+ABCDE1234F
+```
 
+contains 10 characters, but the modified logic incorrectly expects 8 characters.
 
-\### Failed Test
+The test failure confirmed that the automated tests detected the introduced defect.
 
+---
 
+# Restoring the Application
 
-\* `CreateUser\_ValidPANCard\_DoesNotThrowException`
+The original validation logic was restored:
 
-
-
-\### Reason
-
-
-
-Valid PAN card `"ABCDE1234F"` has 10 characters, but modified logic expects 8 characters.
-
-
-
-\---
-
-
-
-\## Restoring the Application
-
-
-
-The original logic was restored:
-
-
-
-```csharp id="u7v8wx"
-
+```csharp
 panCard.Length != 10
-
 ```
 
+## Final Result
 
-
-\### Final Result
-
-
-
-```text id="z9a0bc"
-
+```text
 3 Tests Passed Successfully
-
 ```
 
+---
 
+# Concepts Demonstrated
 
-\---
+* NUnit Test Project setup.
+* Exception testing using NUnit.
+* Happy path testing.
+* Negative testing with invalid inputs.
+* `NullReferenceException` handling.
+* `FormatException` handling.
+* `Assert.That()` constraint model.
+* Single Assertion Rule.
+* Test-driven validation of business rules.
 
+---
 
-
-\## Concepts Demonstrated
-
-
-
-\* NUnit Test Project setup
-
-\* Exception testing using NUnit
-
-\* Happy path testing
-
-\* Negative testing (invalid inputs)
-
-\* `NullReferenceException` handling
-
-\* `FormatException` handling
-
-\* Assert.That constraint model
-
-\* Single Assertion Rule
-
-\* Test-driven validation of business rules
-
-
-
-\---
-
-
-
-\## Conclusion
-
-
+# Conclusion
 
 The `UserManagerLib` functionality was successfully tested using NUnit.
 
+The test suite validated:
 
+* Successful user creation with a valid PAN card.
+* Proper exception handling for null PAN values.
+* Proper exception handling for invalid PAN length.
 
-The tests validate:
-
-
-
-\* Successful user creation with valid PAN
-
-\* Proper exception handling for null PAN
-
-\* Proper exception handling for invalid PAN length
-
-
-
-The test suite also successfully detects intentional defects in the application, ensuring reliability and correctness of the system.
-
-
+The tests also successfully detected intentionally introduced defects, demonstrating the reliability and correctness of automated unit testing.
 
 All objectives of the exercise were completed successfully.
-
-
-
