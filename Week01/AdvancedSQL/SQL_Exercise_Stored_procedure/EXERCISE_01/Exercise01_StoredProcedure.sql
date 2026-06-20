@@ -1,0 +1,117 @@
+CREATE DATABASE CognizantStoredProcedures;
+GO
+
+USE CognizantStoredProcedures;
+GO
+
+CREATE TABLE Departments ( 
+DepartmentID INT PRIMARY KEY, 
+DepartmentName VARCHAR(100) 
+); 
+
+CREATE TABLE Employees ( 
+EmployeeID INT PRIMARY KEY, 
+FirstName VARCHAR(50), 
+LastName VARCHAR(50), 
+DepartmentID INT FOREIGN KEY REFERENCES Departments(DepartmentID), 
+Salary DECIMAL(10,2), 
+JoinDate DATE 
+); 
+
+INSERT INTO Departments (DepartmentID, DepartmentName) VALUES 
+(1, 'HR'), 
+(2, 'Finance'), 
+(3, 'IT'), 
+(4, 'Marketing'); 
+
+INSERT INTO Employees (EmployeeID, FirstName, LastName, DepartmentID, Salary, 
+JoinDate) VALUES 
+(1, 'John', 'Doe', 1, 5000.00, '2020-01-15'), 
+(2, 'Jane', 'Smith', 2, 6000.00, '2019-03-22'), 
+(3, 'Michael', 'Johnson', 3, 7000.00, '2018-07-30'), 
+(4, 'Emily', 'Davis', 4, 5500.00, '2021-11-05'); 
+
+
+/*
+Exercise 1: Create a Stored Procedure 
+Goal: Create a stored procedure to retrieve employee details by department. 
+Steps: 
+1. Define the stored procedure with a parameter for DepartmentID. 
+2. Write the SQL query to select employee details based on the DepartmentID. 
+3. Create a stored procedure named `sp_InsertEmployee` with the following code: 
+CREATE PROCEDURE sp_InsertEmployee 
+@FirstName VARCHAR(50), 
+@LastName VARCHAR(50), 
+@DepartmentID INT, 
+@Salary DECIMAL(10,2), 
+@JoinDate DATE 
+AS 
+BEGIN 
+INSERT INTO Employees (FirstName, LastName, DepartmentID, Salary, JoinDate) 
+VALUES (@FirstName, @LastName, @DepartmentID, @Salary, @JoinDate); 
+END; 
+*/
+GO
+CREATE PROCEDURE sp_GetEmployeesByDepartment
+    @DepartmentID INT
+AS
+BEGIN
+
+    SELECT
+        EmployeeID,
+        FirstName,
+        LastName,
+        DepartmentID,
+        Salary,
+        JoinDate
+    FROM Employees
+    WHERE DepartmentID = @DepartmentID;
+
+END;
+GO
+
+EXEC sp_GetEmployeesByDepartment @DepartmentID = 3;
+
+GO
+CREATE PROCEDURE sp_InsertEmployee
+    @EmployeeID INT,
+    @FirstName VARCHAR(50),
+    @LastName VARCHAR(50),
+    @DepartmentID INT,
+    @Salary DECIMAL(10,2),
+    @JoinDate DATE
+AS
+BEGIN
+
+    INSERT INTO Employees
+    (
+        EmployeeID,
+        FirstName,
+        LastName,
+        DepartmentID,
+        Salary,
+        JoinDate
+    )
+    VALUES
+    (
+        @EmployeeID,
+        @FirstName,
+        @LastName,
+        @DepartmentID,
+        @Salary,
+        @JoinDate
+    );
+
+END;
+GO
+
+EXEC sp_InsertEmployee
+    @EmployeeID = 5,
+    @FirstName = 'Bruce',
+    @LastName = 'Wayne',
+    @DepartmentID = 3,
+    @Salary = 9000.00,
+    @JoinDate = '2024-01-10';
+
+
+SELECT * FROM Employees;
