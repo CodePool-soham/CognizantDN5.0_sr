@@ -1,6 +1,6 @@
-# 📧 CustomerCommLib - Moq Unit Testing Example
+#  CustomerCommLib - Moq Unit Testing Example
 
-## 📌 Overview
+##  Overview
 
 This project demonstrates how to build a **testable C# application using Dependency Injection and Moq**.
 
@@ -10,7 +10,7 @@ To avoid sending real emails during unit testing, the SMTP dependency is replace
 
 ---
 
-# 🏗️ Project Structure
+#  Project Structure
 
 ```text
 moq_exercises
@@ -26,7 +26,7 @@ moq_exercises
 
 ---
 
-# ⚙️ Technologies Used
+#  Technologies Used
 
 * C# (.NET Framework / .NET Core)
 * NUnit (Unit Testing Framework)
@@ -35,7 +35,7 @@ moq_exercises
 
 ---
 
-# 📦 CustomerCommLib (Production Code)
+#  CustomerCommLib (Production Code)
 
 ## 🔹 IMailSender Interface
 
@@ -120,7 +120,7 @@ Using Moq allows us to simulate email sending behavior without actually sending 
 
 ---
 
-# 📌 Moq Mock Object Creation
+#  Moq Mock Object Creation
 
 Example:
 
@@ -132,7 +132,7 @@ The mock object behaves like a fake email service.
 
 ---
 
-# 🧪 Test Case Implemented
+#  Test Case Implemented
 
 ## SendCustomerMail_WithValidDetails_ReturnsTrue
 
