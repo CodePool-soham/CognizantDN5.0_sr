@@ -1,201 +1,157 @@
+# Exercise01 - ASP.NET Core Web API (CRUD Hands-on)
 
+## Objective
 
+This project demonstrates the creation and execution of a simple ASP.NET Core Web API application.
 
+The exercise focuses on:
 
-\---
+* Understanding RESTful Web Services
+* Difference between Web API and Web Services
+* Introduction to Microservices Architecture
+* HTTP Request and Response concepts
+* HTTP Action Verbs
+* HTTP Status Codes
+* Creating API Controllers
+* Performing CRUD Operations
+* Testing APIs using Swagger
 
+---
 
+# 1. RESTful Web Service, Web API & Microservices
 
-````md
+## RESTful Web Service
 
-\# Exercise01 - ASP.NET Core Web API (CRUD Hands-on)
+REST (Representational State Transfer) is an architectural style used to design scalable web services using HTTP communication.
 
+### Features of REST
 
+* Uses HTTP protocol for communication
+* Stateless request-response communication
+* Supports standard HTTP methods
+* Transfers data using JSON/XML formats
+* Lightweight and scalable architecture
+* Suitable for distributed applications
 
-\## 📌 Objective
+---
 
+## Web API vs Web Service
 
+| Web API                                   | Web Service                         |
+| ----------------------------------------- | ----------------------------------- |
+| Uses HTTP protocol                        | Uses SOAP or HTTP                   |
+| Lightweight architecture                  | More heavyweight                    |
+| Supports JSON and XML                     | Mostly XML based                    |
+| Easy integration with modern applications | Requires more configuration         |
+| Commonly used in REST-based systems       | Commonly used in SOAP-based systems |
 
-This project demonstrates the creation and execution of a simple ASP.NET Core Web API application. It covers RESTful architecture concepts, HTTP methods, status codes, and configuration files in ASP.NET Core.
+---
 
+## Microservices
 
+Microservices architecture divides a large application into small independent services.
 
-\---
+Each service:
 
+* Performs a specific business function
+* Can be developed independently
+* Can be deployed separately
+* Communicates through APIs
 
+Example:
 
-\# 📌 1. RESTful Web Service, Web API \& Microservices
+An e-commerce application can have separate services for:
 
+* User Management
+* Product Management
+* Order Processing
+* Payment Processing
 
+---
 
-\## ✔ RESTful Web Service
+# 2. HTTP Request and HTTP Response
 
-REST (Representational State Transfer) is an architectural style used for building scalable web services using HTTP protocols.
+## HTTP Request
 
+An HTTP request is sent from the client application to the server.
 
+It contains:
 
-\### Features of REST:
+* URL
+* HTTP Method
+* Headers
+* Request Body (for POST and PUT requests)
 
-\- Representational State Transfer (REST)
+Example:
 
-\- Stateless communication (no server memory between requests)
+```
+GET /api/products
+```
 
-\- Uses standard HTTP methods
+---
 
-\- Data is exchanged using messages (JSON/XML)
+## HTTP Response
 
-\- Supports multiple formats (NOT restricted to XML)
+An HTTP response is returned from the server to the client.
 
-\- Lightweight and scalable
+It contains:
 
+* HTTP Status Code
+* Response Headers
+* Response Data
 
+Example:
 
-\---
+```json
+{
+   "id":1,
+   "name":"Laptop"
+}
+```
 
+---
 
+# 3. HTTP Action Verbs
 
-\## ✔ Web API vs Web Service
+ASP.NET Core Web API uses HTTP verbs to perform CRUD operations.
 
+| HTTP Verb | Purpose              |
+| --------- | -------------------- |
+| GET       | Retrieve data        |
+| POST      | Create new data      |
+| PUT       | Update existing data |
+| DELETE    | Remove data          |
 
-
-| Web API | Web Service |
-
-|--------|------------|
-
-| Uses HTTP protocol | Uses SOAP or HTTP |
-
-| Lightweight | Heavy and XML-based |
-
-| Supports JSON/XML | Mostly XML |
-
-| Easy integration | Complex integration |
-
-
-
-\---
-
-
-
-\## ✔ Microservices
-
-Microservices architecture breaks an application into small independent services that communicate over APIs. Each service performs a specific business function and can be deployed independently.
-
-
-
-\---
-
-
-
-\# 📌 2. HTTP Request \& HTTP Response
-
-
-
-\## ✔ HTTP Request
-
-An HTTP Request is sent from the client to the server and contains:
-
-\- URL
-
-\- HTTP Method (GET, POST, PUT, DELETE)
-
-\- Headers
-
-\- Body (optional for POST/PUT)
-
-
-
-\## ✔ HTTP Response
-
-An HTTP Response is sent from server to client and contains:
-
-\- Status Code (200, 400, 401, 500)
-
-\- Response Data (JSON/XML)
-
-\- Headers
-
-
-
-\---
-
-
-
-\# 📌 3. HTTP Action Verbs
-
-
-
-ASP.NET Core Web API uses HTTP verbs to perform operations:
-
-
-
-| Verb | Meaning |
-
-|------|--------|
-
-| GET | Retrieve data |
-
-| POST | Create new data |
-
-| PUT | Update existing data |
-
-| DELETE | Remove data |
-
-
-
-\### Usage in Web API Controller:
-
-
+Usage in Controller:
 
 ```csharp
+[HttpGet]
 
-\[HttpGet]
+[HttpPost]
 
-\[HttpPost]
+[HttpPut]
 
-\[HttpPut]
+[HttpDelete]
+```
 
-\[HttpDelete]
+These attributes define which HTTP requests are handled by controller methods.
 
-````
+---
 
+# 4. HTTP Status Codes in Web API
 
+ASP.NET Core Web API returns status codes to indicate request results.
 
-These attributes define which HTTP method an action method will respond to.
+| Status Code             | Description                    |
+| ----------------------- | ------------------------------ |
+| 200 OK                  | Request completed successfully |
+| 400 BadRequest          | Invalid request data           |
+| 401 Unauthorized        | Authentication required        |
+| 500 InternalServerError | Server-side error              |
 
-
-
-\---
-
-
-
-\# 📌 4. HTTP Status Codes in Web API
-
-
-
-ASP.NET Core uses ActionResult types to return HTTP status codes:
-
-
-
-| Status Code               | Meaning                 |
-
-| ------------------------- | ----------------------- |
-
-| Ok (200)                  | Request successful      |
-
-| BadRequest (400)          | Invalid input           |
-
-| Unauthorized (401)        | Authentication required |
-
-| InternalServerError (500) | Server-side error       |
-
-
-
-\### Example:
-
-
+Examples:
 
 ```csharp
-
 return Ok();
 
 return BadRequest();
@@ -203,264 +159,263 @@ return BadRequest();
 return Unauthorized();
 
 return StatusCode(500);
-
 ```
 
+---
 
+# 5. Web API Structure
 
-\---
+A Web API application contains the following components:
 
+## Controller
 
+Controllers handle incoming HTTP requests and return responses.
 
-\# 📌 5. Web API Structure
-
-
-
-A Web API consists of:
-
-
-
-\### ✔ Controller
-
-
-
-Handles incoming HTTP requests.
-
-
-
-\### ✔ Action Methods
-
-
-
-Methods inside controller that handle operations.
-
-
-
-\### ✔ ApiController Base Class
-
-
-
-Enables API-specific behavior like automatic model validation.
-
-
-
-\### Example Structure:
-
-
+Example:
 
 ```csharp
-
-\[ApiController]
-
-\[Route("api/\[controller]")]
-
+[ApiController]
+[Route("api/[controller]")]
 public class ValuesController : ControllerBase
-
 {
 
-&#x20;   \[HttpGet]
-
-&#x20;   public IActionResult Get() { return Ok(); }
-
 }
-
 ```
 
+---
 
+## Action Methods
 
-\---
+Action methods contain the business logic for handling API requests.
 
+Example:
 
+```csharp
+[HttpGet]
+public IActionResult Get()
+{
+    return Ok();
+}
+```
 
-\# 📌 6. Configuration Files in ASP.NET Core
+---
 
+## ApiController Attribute
 
+The `[ApiController]` attribute provides:
 
-\## ✔ Program.cs
+* Automatic model validation
+* Improved API behavior
+* Automatic HTTP response handling
 
+---
 
+# 6. Configuration Files in ASP.NET Core
 
-Main entry point of application.
+## Program.cs
 
-
+The main entry point of an ASP.NET Core application.
 
 Used for:
 
+* Dependency Injection configuration
+* Middleware setup
+* Application startup configuration
+* Routing configuration
 
+---
 
-\* Dependency Injection
+## appsettings.json
 
-\* Middleware configuration
+Stores application configuration values.
 
-\* Routing setup
+Examples:
 
+* Connection strings
+* Logging configuration
+* Application settings
 
+Example:
 
-\---
-
-
-
-\## ✔ appsettings.json
-
-
-
-Used to store configuration values like:
-
-
-
-\* Connection strings
-
-\* Logging settings
-
-\* Application settings
-
-
-
-\---
-
-
-
-\## ✔ launchSettings.json
-
-
-
-Defines runtime settings such as:
-
-
-
-\* Application URL
-
-\* Environment (Development/Production)
-
-\* Debug configuration
-
-
-
-\---
-
-
-
-\## ✔ (Old ASP.NET 4.5 Reference)
-
-
-
-\### Route.config
-
-
-
-Defines routing patterns for Web API requests.
-
-
-
-\### WebApi.config
-
-
-
-Used to configure:
-
-
-
-\* Routes
-
-\* Formatters (JSON/XML)
-
-\* Filters
-
-
-
-\---
-
-
-
-\# 📌 7. Hands-on Implementation
-
-
-
-\## ✔ Steps performed:
-
-
-
-1\. Created ASP.NET Core Web API project using Visual Studio
-
-2\. Selected Web API template
-
-3\. Created ValuesController with Read/Write actions
-
-4\. Implemented HTTP verbs:
-
-
-
-&#x20;  \* GET
-
-&#x20;  \* POST
-
-&#x20;  \* PUT
-
-&#x20;  \* DELETE
-
-5\. Executed application using Swagger
-
-6\. Tested all API endpoints successfully
-
-
-
-\---
-
-
-
-\# 📌 8. API Endpoints
-
-
-
-| Method | Endpoint         | Description     |
-
-| ------ | ---------------- | --------------- |
-
-| GET    | /api/values      | Get all values  |
-
-| GET    | /api/values/{id} | Get value by ID |
-
-| POST   | /api/values      | Create value    |
-
-| PUT    | /api/values/{id} | Update value    |
-
-| DELETE | /api/values/{id} | Delete value    |
-
-
-
-\---
-
-
-
-\# 📌 9. Output Verification
-
-
-
-The application was tested using Swagger UI. All CRUD operations were successfully executed and returned expected HTTP responses.
-
-
-
-\---
-
-
-
-\# 📌 Conclusion
-
-
-
-This project successfully demonstrates the implementation of a RESTful Web API using ASP.NET Core. It includes CRUD operations, HTTP methods, status codes, and configuration understanding. The API was tested using Swagger and verified successfully.
-
-
-
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "DatabaseConnection"
+  }
+}
 ```
 
+---
 
+## launchSettings.json
 
-\---
+Contains runtime configuration settings.
 
+Used for:
 
+* Application URLs
+* Development environment settings
+* Debug configuration
 
+---
+
+## ASP.NET Framework Reference Files
+
+### Route.config
+
+Used in older ASP.NET Web API applications for defining routes.
+
+### WebApi.config
+
+Used for:
+
+* API routing
+* Formatter configuration
+* Filters
+
+---
+
+# 7. Hands-on Implementation
+
+## Steps Performed
+
+1. Created ASP.NET Core Web API project using Visual Studio
+
+2. Selected Web API template
+
+3. Created controller with CRUD actions
+
+4. Implemented HTTP methods:
+
+* GET
+* POST
+* PUT
+* DELETE
+
+5. Executed the application
+
+6. Tested APIs using Swagger UI
+
+7. Verified successful responses
+
+---
+
+# 8. API Endpoints
+
+| Method | Endpoint           | Description           |
+| ------ | ------------------ | --------------------- |
+| GET    | `/api/values`      | Retrieve all values   |
+| GET    | `/api/values/{id}` | Retrieve value by ID  |
+| POST   | `/api/values`      | Create new value      |
+| PUT    | `/api/values/{id}` | Update existing value |
+| DELETE | `/api/values/{id}` | Delete value          |
+
+---
+
+# 9. CRUD Operations
+
+## GET
+
+Used to retrieve resources.
+
+Example:
+
+```http
+GET /api/values
 ```
 
+---
 
+## POST
 
+Used to create new resources.
+
+Example:
+
+```http
+POST /api/values
+```
+
+Request Body:
+
+```json
+{
+   "name":"Sample"
+}
+```
+
+---
+
+## PUT
+
+Used to update existing resources.
+
+Example:
+
+```http
+PUT /api/values/1
+```
+
+---
+
+## DELETE
+
+Used to remove resources.
+
+Example:
+
+```http
+DELETE /api/values/1
+```
+
+---
+
+# 10. API Testing Using Swagger
+
+Swagger UI was used to test all API endpoints.
+
+The following operations were verified:
+
+* GET request execution
+* POST request execution
+* PUT request execution
+* DELETE request execution
+* Response status verification
+
+---
+
+# Output Verification
+
+All CRUD operations were executed successfully.
+
+Expected responses were received from the API endpoints with appropriate HTTP status codes.
+
+---
+
+# Concepts Demonstrated
+
+* RESTful Web API architecture
+* HTTP Request and Response
+* HTTP Action Verbs
+* HTTP Status Codes
+* API Controllers
+* CRUD Operations
+* ASP.NET Core Configuration Files
+* Swagger API Testing
+* Basic Microservices Understanding
+
+---
+
+# Conclusion
+
+This exercise successfully demonstrated the development of a RESTful ASP.NET Core Web API application.
+
+The project covered:
+
+* Creating Web API controllers
+* Implementing CRUD operations
+* Understanding HTTP methods
+* Handling HTTP responses
+* Testing APIs using Swagger
+
+The application was successfully executed and verified, providing practical understanding of building scalable Web API services using ASP.NET Core.
