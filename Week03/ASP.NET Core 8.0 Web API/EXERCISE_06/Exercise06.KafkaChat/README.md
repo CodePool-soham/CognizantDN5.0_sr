@@ -1,608 +1,374 @@
-\# EXERCISE 06 – Kafka Integration with C#
+# Exercise 06 – Kafka Integration with C#
 
+## Overview
 
+This project demonstrates how to integrate **Apache Kafka** with **C# (.NET 8)** applications using the **Confluent.Kafka** library. It covers Kafka fundamentals, installation, configuration, and the implementation of both **Console** and **Windows Forms** chat applications for real-time message publishing and consumption.
 
-\## Objective
+---
 
+## Objectives
 
+- Understand Apache Kafka and its distributed architecture.
+- Learn Kafka components such as Producers, Consumers, Topics, Partitions, Brokers, and ZooKeeper.
+- Install and configure Apache Kafka on Windows.
+- Integrate Kafka with .NET applications using the Confluent.Kafka NuGet package.
+- Implement Kafka Producer and Consumer applications.
+- Build real-time chat applications using Console and Windows Forms.
 
-\* Understand Apache Kafka as a distributed streaming platform.
+---
 
-\* Learn Kafka Architecture including Topics, Partitions, Brokers, and ZooKeeper.
+## Technologies Used
 
-\* Install and configure Kafka on Windows.
+- C#
+- .NET 8
+- Apache Kafka 3.7.1
+- Java JDK 17 or later
+- Confluent.Kafka
+- Windows Forms
+- Visual Studio 2022
 
-\* Integrate Kafka with .NET applications using the Confluent.Kafka package.
+---
 
-\* Implement a Chat Application using Kafka for message publishing and consumption.
+## Apache Kafka Overview
 
-\* Demonstrate message exchange through Console Application and Windows Forms Application.
+Apache Kafka is an open-source distributed event streaming platform designed for building real-time data pipelines and streaming applications. It enables applications to publish, subscribe to, store, and process streams of records efficiently.
 
+### Key Features
 
+- High Throughput
+- Scalability
+- Fault Tolerance
+- Distributed Architecture
+- Real-Time Message Streaming
 
-\---
+---
 
+## Kafka Architecture
 
+### Producer
 
-\# Theory
+Publishes messages to Kafka topics.
 
+### Consumer
 
+Subscribes to Kafka topics and receives published messages.
 
-\## What is Apache Kafka?
+### Topic
 
-
-
-Apache Kafka is an open-source distributed event streaming platform used for building real-time data pipelines and streaming applications. It enables applications to publish, subscribe, store, and process streams of records.
-
-
-
-\### Key Features
-
-
-
-\* High Throughput
-
-\* Scalability
-
-\* Fault Tolerance
-
-\* Real-Time Processing
-
-\* Distributed Architecture
-
-
-
-\---
-
-
-
-\## Kafka Architecture
-
-
-
-\### Producer
-
-
-
-A Producer publishes messages to Kafka topics.
-
-
-
-\### Consumer
-
-
-
-A Consumer subscribes to topics and reads messages.
-
-
-
-\### Topic
-
-
-
-A Topic is a logical channel used to categorize messages.
-
-
+A logical channel used to organize messages.
 
 Example:
 
-
-
 ```text
-
 chat-topic
-
 ```
 
+### Partition
 
+Divides topics into multiple segments to support scalability and parallel processing.
 
-\### Partition
+### Broker
 
+Kafka server responsible for storing and serving messages.
 
+### ZooKeeper
 
-Topics are divided into partitions for scalability and parallel processing.
+Manages Kafka broker coordination, cluster metadata, and configuration.
 
+---
 
+## Software Requirements
 
-\### Broker
+- Visual Studio 2022
+- .NET 8 SDK
+- Apache Kafka 3.7.1
+- Java JDK 17 or later
+- Confluent.Kafka NuGet Package
 
+---
 
+# Kafka Installation
 
-A Kafka Broker is a server responsible for storing and serving messages.
+## Step 1 – Download Kafka
 
+Download Apache Kafka from the official website and extract it.
 
-
-\### ZooKeeper
-
-
-
-ZooKeeper manages Kafka cluster metadata, broker coordination, and configuration management.
-
-
-
-\---
-
-
-
-\# Software Requirements
-
-
-
-\* Visual Studio 2022
-
-\* .NET 8.0
-
-\* Apache Kafka 3.7.1
-
-\* Java JDK 17/21/22
-
-\* Confluent.Kafka NuGet Package
-
-
-
-\---
-
-
-
-\# Kafka Installation and Configuration
-
-
-
-\## Step 1 – Download Kafka
-
-
-
-Download Apache Kafka 3.7.1 and extract it to:
-
-
+Example location:
 
 ```text
-
-C:\\kafka\_2.13-3.7.1
-
+C:\kafka_2.13-3.7.1
 ```
 
+---
 
-
-\---
-
-
-
-\## Step 2 – Start ZooKeeper
-
-
+## Step 2 – Start ZooKeeper
 
 Open Command Prompt and execute:
 
-
-
 ```cmd
-
-bin\\windows\\zookeeper-server-start.bat config\\zookeeper.properties
-
+bin\windows\zookeeper-server-start.bat config\zookeeper.properties
 ```
 
-
-
-ZooKeeper starts on port 2181.
-
-
-
-\---
-
-
-
-\## Step 3 – Start Kafka Server
-
-
-
-Open a new Command Prompt and execute:
-
-
-
-```cmd
-
-bin\\windows\\kafka-server-start.bat config\\server.properties
-
-```
-
-
-
-Kafka Broker starts on port 9092.
-
-
-
-\---
-
-
-
-\## Step 4 – Create Topic
-
-
-
-Open another Command Prompt and execute:
-
-
-
-```cmd
-
-bin\\windows\\kafka-topics.bat --create --topic chat-topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
-
-```
-
-
-
-Output:
-
-
+ZooKeeper starts on:
 
 ```text
+localhost:2181
+```
 
+---
+
+## Step 3 – Start Kafka Broker
+
+Open another Command Prompt and run:
+
+```cmd
+bin\windows\kafka-server-start.bat config\server.properties
+```
+
+Kafka Broker starts on:
+
+```text
+localhost:9092
+```
+
+---
+
+## Step 4 – Create Kafka Topic
+
+```cmd
+bin\windows\kafka-topics.bat --create --topic chat-topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+```
+
+Expected Output:
+
+```text
 Created topic chat-topic
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Step 5 – Verify Topic
-
-
+## Step 5 – Verify Topic
 
 ```cmd
-
-bin\\windows\\kafka-topics.bat --list --bootstrap-server localhost:9092
-
+bin\windows\kafka-topics.bat --list --bootstrap-server localhost:9092
 ```
-
-
 
 Output:
 
-
-
 ```text
-
 chat-topic
-
 ```
 
+---
 
+# Console Chat Application
 
-\---
-
-
-
-\# Hands-On 1: Console Chat Application
-
-
-
-\## NuGet Package
-
-
+## NuGet Package
 
 Install:
 
-
-
 ```text
-
 Confluent.Kafka
-
 ```
 
+---
 
+## Kafka Producer
 
-\---
+The Producer accepts user input and publishes messages to the Kafka topic.
 
-
-
-\## Producer Application
-
-
-
-The producer accepts user input and publishes chat messages to Kafka Topic.
-
-
-
-\### Configuration
-
-
+### Producer Configuration
 
 ```csharp
-
 var config = new ProducerConfig
-
 {
-
-&#x20;   BootstrapServers = "localhost:9092"
-
+    BootstrapServers = "localhost:9092"
 };
-
 ```
 
-
-
-\### Topic
-
-
+### Topic
 
 ```text
-
 chat-topic
-
 ```
 
+---
 
+## Kafka Consumer
 
-\---
+The Consumer subscribes to the topic and continuously receives messages.
 
-
-
-\## Consumer Application
-
-
-
-The consumer subscribes to the topic and receives messages continuously.
-
-
-
-\### Configuration
-
-
+### Consumer Configuration
 
 ```csharp
-
 var consumerConfig = new ConsumerConfig
-
 {
-
-&#x20;   BootstrapServers = "localhost:9092",
-
-&#x20;   GroupId = "chat-group",
-
-&#x20;   AutoOffsetReset = AutoOffsetReset.Earliest
-
+    BootstrapServers = "localhost:9092",
+    GroupId = "chat-group",
+    AutoOffsetReset = AutoOffsetReset.Earliest
 };
-
 ```
 
+---
 
+## Sample Output
 
-\---
-
-
-
-\## Output
-
-
-
-Producer:
-
-
+### Producer
 
 ```text
-
 Kafka Chat Publisher
 
-Type message and press Enter
-
-
+Type your message:
 
 Hello Kafka
 
 Sent: Hello Kafka
-
 ```
 
-
-
-Consumer:
-
-
+### Consumer
 
 ```text
-
 Hello Kafka
-
 ```
 
+---
 
+# Windows Forms Chat Application
 
-\---
+## Objective
 
+Develop a Windows Forms application that enables multiple clients to communicate in real time through Kafka.
 
+---
 
-\# Hands-On 2: Windows Forms Chat Application
+## User Interface
 
-
-
-\## Objective
-
-
-
-Create a Windows Forms Chat Client using Kafka.
-
-
-
-Messages sent from one client should be visible in all connected clients.
-
-
-
-\---
-
-
-
-\## Controls Used
-
-
-
-\### TextBox
-
-
+### TextBox
 
 ```text
-
 txtMessage
-
 ```
 
-
-
-\### Button
-
-
+### Button
 
 ```text
-
 btnSend
-
 ```
 
-
-
-\### ListBox
-
-
+### ListBox
 
 ```text
-
 lstMessages
-
 ```
 
+---
 
+## Producer Workflow
 
-\---
+When the **Send** button is clicked:
 
+1. Read the message from the TextBox.
+2. Publish it to the Kafka topic.
+3. Clear the TextBox.
 
+---
 
-\## Producer Functionality
-
-
-
-When the user clicks the Send button:
-
-
-
-1\. Read text from TextBox.
-
-2\. Publish message to Kafka Topic.
-
-3\. Clear TextBox.
-
-
-
-\---
-
-
-
-\## Consumer Functionality
-
-
+## Consumer Workflow
 
 A background task continuously:
 
+1. Subscribes to the topic.
+2. Receives new messages.
+3. Displays them in the ListBox.
 
+---
 
-1\. Subscribes to chat-topic.
+## Sample Output
 
-2\. Receives messages.
-
-3\. Displays them in ListBox.
-
-
-
-\---
-
-
-
-\## Output
-
-
-
-Client 1:
-
-
+### Client 1
 
 ```text
-
 Hello from Client 1
-
 ```
 
-
-
-Client 2:
-
-
+### Client 2
 
 ```text
-
 Hello from Client 1
-
 ```
 
+Both clients receive the message instantly through Kafka.
 
+---
 
-Both clients successfully receive messages through Kafka.
+# Project Features
 
+- Kafka Producer implementation
+- Kafka Consumer implementation
+- Console-based chat application
+- Windows Forms chat application
+- Real-time messaging
+- Topic-based communication
+- Multiple client support
 
+---
 
-\---
+# Project Structure
 
+```text
+Exercise06.Kafka
 
+│
+├── KafkaProducer
+│   └── Program.cs
+│
+├── KafkaConsumer
+│   └── Program.cs
+│
+├── KafkaChatWinForms
+│   ├── Form1.cs
+│   ├── Form1.Designer.cs
+│   └── Program.cs
+│
+└── README.md
+```
 
-\# Result
+---
 
+# Results
 
+The project successfully demonstrates:
 
-Successfully integrated Apache Kafka with C# applications.
+- Apache Kafka installation and configuration
+- Kafka Producer implementation
+- Kafka Consumer implementation
+- Real-time communication using Kafka Topics
+- Console-based messaging
+- Windows Forms chat application using Kafka
+- Message broadcasting across multiple clients
 
+---
 
+# Key Learnings
 
-Implemented:
+- Apache Kafka architecture
+- Topic-based messaging
+- Producer and Consumer communication
+- Kafka integration with .NET applications
+- Event-driven application development
+- Real-time messaging using Kafka
 
+---
 
+# References
 
-\* Kafka Producer
+- Apache Kafka Documentation: https://kafka.apache.org/
+- Confluent Documentation: https://docs.confluent.io/
+- C# Corner – Apache Kafka .NET Application: https://www.c-sharpcorner.com/article/apache-kafka-net-application/
+- C# Corner – Kafka Installation Guide: https://www.c-sharpcorner.com/article/step-by-step-installation-and-configuration-guide-of-apache-kafka-on-windows-ope/
 
-\* Kafka Consumer
+---
 
-\* Console Chat Application
+## Conclusion
 
-\* Windows Forms Chat Application
-
-
-
-Messages were successfully published and consumed using Kafka Topics, demonstrating real-time communication between multiple clients.
-
-
-
-\---
-
-
-
-\# References
-
-
-
-1\. https://www.c-sharpcorner.com/article/apache-kafka-net-application/
-
-
-
-2\. https://www.c-sharpcorner.com/article/step-by-step-installation-and-configuration-guide-of-apache-kafka-on-windows-ope/
-
-
-
-3\. https://kafka.apache.org/
-
-
-
-4\. https://docs.confluent.io/
-
-
-
+This exercise demonstrates the successful integration of Apache Kafka with C# (.NET 8) applications. Kafka Producers and Consumers were implemented using the Confluent.Kafka library, enabling real-time communication through both Console and Windows Forms applications. The project provides a practical introduction to event-driven application development using Apache Kafka.
