@@ -1,444 +1,297 @@
-\# Exercise 04 - ASP.NET Core Web API CRUD Operations
+# Exercise 04 - ASP.NET Core Web API CRUD Operations
 
+## 📌 Project Overview
 
+This project demonstrates how to build a RESTful ASP.NET Core Web API that performs Create, Read, Update, and Delete (CRUD) operations on a collection of employees. The API uses a hardcoded employee list to illustrate HTTP methods, model binding, validation, and API testing using Swagger and Postman.
 
-\## Objective
+---
 
+## 🎯 Objectives
 
+- Create RESTful API endpoints using HTTP verbs (GET, POST, PUT, DELETE).
+- Use the `[FromBody]` attribute to bind JSON request data to C# objects.
+- Implement CRUD operations on a hardcoded employee collection.
+- Return responses using `ActionResult` and appropriate HTTP status codes.
+- Validate employee IDs and handle invalid requests gracefully.
+- Test API endpoints using Swagger UI and Postman.
 
-To demonstrate the creation of Web API action methods for performing Create, Read, Update, and Delete (CRUD) operations using ASP.NET Core Web API.
+---
 
+## 📚 Learning Outcomes
 
+After completing this exercise, you will be able to:
 
-\### Learning Outcomes
+- Understand RESTful API design principles.
+- Create API action methods using ASP.NET Core Web API.
+- Perform CRUD operations using HTTP methods.
+- Use model binding with the `[FromBody]` attribute.
+- Return appropriate HTTP responses using `ActionResult<T>`.
+- Validate incoming requests and return meaningful error messages.
+- Test Web APIs using Swagger and Postman.
 
+---
 
+## 🛠️ Technologies Used
 
-\* Create API endpoints using HTTP verbs (GET, POST, PUT, DELETE).
+- ASP.NET Core Web API (.NET 8)
+- C#
+- Swagger (Swashbuckle.AspNetCore)
+- Postman
+- Visual Studio 2022/2026
 
-\* Use the `\[FromBody]` attribute to extract JSON data from the request body.
+---
 
-\* Map request data to a custom model class (`Employee`).
+## 📁 Project Structure
 
-\* Perform CRUD operations on a hardcoded employee list.
-
-\* Return data using `ActionResult`.
-
-\* Validate employee IDs and return appropriate error responses.
-
-\* Test APIs using Swagger and Postman.
-
-
-
-\---
-
-
-
-\## Problem Statement
-
-
-
-Update employee information through a Web API PUT action method.
-
-
-
-Requirements:
-
-
-
-1\. Employee information must be updated based on user input.
-
-2\. Use Swagger to invoke the action method mapped with the HTTP PUT verb.
-
-3\. Return employee data using `ActionResult<Employee>`.
-
-4\. If the employee ID is less than or equal to 0, return:
-
-
-
-&#x20;  ```
-
-&#x20;  BadRequest("Invalid employee id")
-
-&#x20;  ```
-
-5\. If the employee ID does not exist in the hardcoded employee list, return:
-
-
-
-&#x20;  ```
-
-&#x20;  BadRequest("Invalid employee id")
-
-&#x20;  ```
-
-6\. If the employee ID is valid:
-
-
-
-&#x20;  \* Read employee details from the request body using `\[FromBody]`.
-
-&#x20;  \* Update the employee information in the hardcoded list.
-
-&#x20;  \* Return the updated employee data.
-
-
-
-\---
-
-
-
-\## Project Structure
-
-
-
-```
-
+```text
 Exercise04.API
-
 │
-
 ├── Controllers
-
 │   └── EmployeeController.cs
-
 │
-
 ├── Models
-
 │   └── Employee.cs
-
 │
-
 ├── Program.cs
-
+│
 └── appsettings.json
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Employee Model
-
-
+## 📦 Employee Model
 
 ```csharp
-
 namespace Exercise04.API.Models
-
 {
+    public class Employee
+    {
+        public int Id { get; set; }
 
-&#x20;   public class Employee
+        public string? Name { get; set; }
 
-&#x20;   {
+        public string? Department { get; set; }
 
-&#x20;       public int Id { get; set; }
-
-
-
-&#x20;       public string? Name { get; set; }
-
-
-
-&#x20;       public string? Department { get; set; }
-
-
-
-&#x20;       public decimal Salary { get; set; }
-
-&#x20;   }
-
+        public decimal Salary { get; set; }
+    }
 }
-
 ```
 
+---
 
+## 📋 Sample Employee Data
 
-\---
-
-
-
-\## Hardcoded Employee Data
-
-
+The application uses a hardcoded list of employees for demonstration purposes.
 
 ```csharp
-
-private static List<Employee> employees = new List<Employee>
-
+private static List<Employee> employees = new()
 {
-
-&#x20;   new Employee { Id = 1, Name = "John", Department = "HR", Salary = 30000 },
-
-&#x20;   new Employee { Id = 2, Name = "Mary", Department = "IT", Salary = 50000 },
-
-&#x20;   new Employee { Id = 3, Name = "David", Department = "Finance", Salary = 45000 }
-
+    new Employee { Id = 1, Name = "John", Department = "HR", Salary = 30000 },
+    new Employee { Id = 2, Name = "Mary", Department = "IT", Salary = 50000 },
+    new Employee { Id = 3, Name = "David", Department = "Finance", Salary = 45000 }
 };
-
 ```
 
+---
 
+## 🌐 API Endpoints
 
-\---
+### GET - Retrieve All Employees
 
-
-
-\## API Endpoints
-
-
-
-\### GET - Retrieve Employees
-
-
-
-```
-
+```http
 GET /api/Employee
-
 ```
-
-
 
 Returns the complete list of employees.
 
+**Response:** `200 OK`
 
+---
 
-\---
+### POST - Create Employee
 
-
-
-\### POST - Create Employee
-
-
-
-```
-
+```http
 POST /api/Employee
-
 ```
 
+Creates a new employee and adds it to the collection.
 
-
-Creates a new employee and adds it to the hardcoded list.
-
-
-
-Sample Request:
-
-
+#### Sample Request
 
 ```json
-
 {
-
-&#x20; "name": "Robert",
-
-&#x20; "department": "Marketing",
-
-&#x20; "salary": 55000
-
+  "name": "Robert",
+  "department": "Marketing",
+  "salary": 55000
 }
-
 ```
 
+#### Response
 
+- **201 Created** (or **200 OK**, depending on implementation)
+- Returns the newly created employee.
 
-\---
+---
 
+### PUT - Update Employee
 
-
-\### PUT - Update Employee
-
-
-
-```
-
+```http
 PUT /api/Employee/{id}
-
 ```
 
+Updates an existing employee based on the specified employee ID.
 
-
-Updates employee details based on the provided employee ID.
-
-
-
-Sample Request:
-
-
+#### Sample Request
 
 ```json
-
 {
-
-&#x20; "id": 2,
-
-&#x20; "name": "Mary Updated",
-
-&#x20; "department": "IT",
-
-&#x20; "salary": 65000
-
+  "id": 2,
+  "name": "Mary Updated",
+  "department": "IT",
+  "salary": 65000
 }
-
 ```
 
-
-
-Sample Response:
-
-
+#### Sample Response
 
 ```json
-
 {
-
-&#x20; "id": 2,
-
-&#x20; "name": "Mary Updated",
-
-&#x20; "department": "IT",
-
-&#x20; "salary": 65000
-
+  "id": 2,
+  "name": "Mary Updated",
+  "department": "IT",
+  "salary": 65000
 }
-
 ```
 
+#### Validation Rules
 
+If:
 
-Validation:
+- `id <= 0`, or
+- the employee does not exist,
 
-
-
-\* If `id <= 0`
-
-
+the API returns:
 
 ```text
-
-Invalid employee id
-
+BadRequest("Invalid employee id")
 ```
 
+---
 
+### DELETE - Remove Employee
 
-\* If employee ID does not exist
-
-
-
-```text
-
-Invalid employee id
-
-```
-
-
-
-\---
-
-
-
-\### DELETE - Remove Employee
-
-
-
-```
-
+```http
 DELETE /api/Employee/{id}
-
 ```
 
+Deletes the employee with the specified ID.
 
-
-Deletes an employee from the hardcoded list.
-
-
-
-Sample Response:
-
-
+#### Sample Response
 
 ```text
-
-Employee with id 2 deleted successfully
-
+Employee with id 2 deleted successfully.
 ```
 
+If the employee ID is invalid or does not exist:
 
+```text
+BadRequest("Invalid employee id")
+```
 
-\---
+---
 
+## ✅ Validation Logic
 
+The API validates employee IDs before processing update or delete operations.
 
-\## Testing Using Swagger
+Validation includes:
 
+- Employee ID must be greater than zero.
+- Employee ID must exist in the collection.
+- Invalid requests return:
 
+```text
+Invalid employee id
+```
 
-1\. Run the application.
+using:
 
-2\. Open Swagger UI.
+```csharp
+return BadRequest("Invalid employee id");
+```
 
-3\. Test the following endpoints:
+---
 
+## 🧪 Testing with Swagger
 
+1. Run the application.
+2. Open Swagger UI:
 
-&#x20;  \* GET /api/Employee
+```text
+https://localhost:<port>/swagger
+```
 
-&#x20;  \* POST /api/Employee
+3. Test the following endpoints:
 
-&#x20;  \* PUT /api/Employee/{id}
+- GET `/api/Employee`
+- POST `/api/Employee`
+- PUT `/api/Employee/{id}`
+- DELETE `/api/Employee/{id}`
 
-&#x20;  \* DELETE /api/Employee/{id}
+4. Verify the returned responses and status codes.
 
-4\. Verify successful responses and validation messages.
+---
 
+## 📮 Testing with Postman
 
+You can also test the API using Postman.
 
-\---
+### Example URLs
 
+```text
+GET    https://localhost:<port>/api/Employee
+POST   https://localhost:<port>/api/Employee
+PUT    https://localhost:<port>/api/Employee/2
+DELETE https://localhost:<port>/api/Employee/2
+```
 
+For POST and PUT requests:
 
-\## Expected Results
+- Select **Body**
+- Choose **raw**
+- Select **JSON**
+- Provide the request payload
 
+Verify the returned response body and HTTP status code.
 
+---
 
-\* Employee records can be viewed using GET.
+## 📊 Expected Results
 
-\* New employees can be added using POST.
+- ✅ Retrieve all employees using **GET**
+- ✅ Add new employees using **POST**
+- ✅ Update existing employees using **PUT**
+- ✅ Delete employees using **DELETE**
+- ✅ Invalid employee IDs return **400 Bad Request**
+- ✅ All endpoints can be tested successfully using Swagger and Postman
 
-\* Existing employee records can be updated using PUT.
+---
 
-\* Employee records can be deleted using DELETE.
+## 📖 Key Concepts Demonstrated
 
-\* Invalid employee IDs return:
+- ASP.NET Core Web API
+- RESTful API design
+- CRUD operations
+- HTTP methods (GET, POST, PUT, DELETE)
+- Model binding using `[FromBody]`
+- `ActionResult<T>`
+- Request validation
+- HTTP status codes
+- Swagger integration
+- API testing with Postman
 
+---
 
+## ✅ Conclusion
 
-&#x20; ```
-
-&#x20; Invalid employee id
-
-&#x20; ```
-
-\* All endpoints can be successfully tested using Swagger and Postman.
-
-
-
-\---
-
-
-
-\## Conclusion
-
-
-
-This exercise demonstrates the implementation of CRUD operations in ASP.NET Core Web API using action methods, the `\[FromBody]` attribute, `ActionResult`, validation logic, and Swagger testing. Employee data is maintained using a hardcoded list, and appropriate responses are returned for both successful and invalid requests.
-
-
-
+This exercise demonstrates the implementation of a RESTful ASP.NET Core Web API that performs CRUD operations on employee data using a hardcoded collection. It showcases HTTP verbs, model binding with `[FromBody]`, validation using `ActionResult`, and API testing through Swagger and Postman. This project provides a solid foundation for developing more advanced Web APIs backed by a database in future applications.
