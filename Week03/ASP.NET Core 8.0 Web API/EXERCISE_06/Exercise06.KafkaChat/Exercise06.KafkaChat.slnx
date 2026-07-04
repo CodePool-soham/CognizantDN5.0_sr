@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Exercise06.KafkaChat/Exercise06.KafkaChat.csproj" />
+  <Project Path="KafkaChatClient/KafkaChatClient.csproj" />
+</Solution>
