@@ -1,454 +1,286 @@
-\# Exercise 01 - JWT Authentication in ASP.NET Core Web API
+# Exercise 01 – JWT Authentication in ASP.NET Core Web API
 
+## Overview
 
+This project demonstrates how to implement **JWT (JSON Web Token) Authentication** in an **ASP.NET Core Web API (.NET 8)**. It covers JWT configuration, token generation, authentication middleware, and securing API endpoints using the `[Authorize]` attribute. The application is tested using **Swagger UI**.
 
-\## Objective
+---
 
+## Objectives
 
+- Understand JWT-based authentication.
+- Configure JWT Authentication in ASP.NET Core Web API.
+- Generate JWT tokens after successful user authentication.
+- Secure API endpoints using the `[Authorize]` attribute.
+- Validate JWT tokens using issuer, audience, lifetime, and signing key.
+- Test authentication using Swagger.
 
-Implement JWT (JSON Web Token) based authentication in an ASP.NET Core Web API and secure endpoints using authorization.
+---
 
+## Technologies Used
 
+- ASP.NET Core Web API (.NET 8)
+- C#
+- JWT Bearer Authentication
+- Swagger / OpenAPI
+- Visual Studio 2022
 
-\---
+---
 
-
-
-\## Scenario
-
-
-
-A microservice requires secure login functionality. Users should be able to authenticate using a login endpoint, receive a JWT token, and use that token to access protected API endpoints.
-
-
-
-\---
-
-
-
-\## Technologies Used
-
-
-
-\* ASP.NET Core Web API (.NET 8)
-
-\* JWT Bearer Authentication
-
-\* Swagger / OpenAPI
-
-\* C#
-
-
-
-\---
-
-
-
-\## NuGet Package
-
-
+## NuGet Package
 
 Install the JWT Authentication package:
 
-
-
 ```bash
-
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
-
 ```
 
+---
 
+## Project Structure
 
-\---
+```text
+Exercise01.JWTAuthentication
 
+│
+├── Controllers
+│   ├── AuthController.cs
+│   └── SecureController.cs
+│
+├── Models
+│   └── LoginRequest.cs
+│
+├── Program.cs
+├── appsettings.json
+└── README.md
+```
 
+---
 
+## JWT Configuration
 
-
-\---
-
-
-
-\## JWT Configuration
-
-
-
-\### appsettings.json
-
-
+The JWT settings are stored in **appsettings.json**.
 
 ```json
-
 {
-
-&#x20; "Jwt": {
-
-&#x20;   "Key": "ThisIsASecretKeyForJwtToken12345",
-
-&#x20;   "Issuer": "MyAuthServer",
-
-&#x20;   "Audience": "MyApiUsers",
-
-&#x20;   "DurationInMinutes": 60
-
-&#x20; }
-
+  "Jwt": {
+    "Key": "ThisIsASecretKeyForJwtToken12345",
+    "Issuer": "MyAuthServer",
+    "Audience": "MyApiUsers",
+    "DurationInMinutes": 60
+  }
 }
-
 ```
 
+Configuration values include:
 
+- **Key** – Secret key used to sign JWT tokens.
+- **Issuer** – Identifies the token issuer.
+- **Audience** – Specifies the intended recipients.
+- **DurationInMinutes** – Token expiration time.
 
-\---
+---
 
+## JWT Authentication Configuration
 
-
-\## Authentication Configuration
-
-
-
-JWT Authentication is configured in `Program.cs` using:
-
-
+JWT Authentication is configured in **Program.cs**.
 
 ```csharp
-
 builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters =
+            new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
 
-&#x20;   .AddJwtBearer("Bearer", options =>
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                ValidAudience = builder.Configuration["Jwt:Audience"],
 
-&#x20;   {
-
-&#x20;       options.TokenValidationParameters = new TokenValidationParameters
-
-&#x20;       {
-
-&#x20;           ValidateIssuer = true,
-
-&#x20;           ValidateAudience = true,
-
-&#x20;           ValidateLifetime = true,
-
-&#x20;           ValidateIssuerSigningKey = true,
-
-&#x20;           ValidIssuer = builder.Configuration\["Jwt:Issuer"],
-
-&#x20;           ValidAudience = builder.Configuration\["Jwt:Audience"],
-
-&#x20;           IssuerSigningKey = new SymmetricSecurityKey(
-
-&#x20;               Encoding.UTF8.GetBytes(builder.Configuration\["Jwt:Key"]))
-
-&#x20;       };
-
-&#x20;   });
-
-
+                IssuerSigningKey =
+                    new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(
+                            builder.Configuration["Jwt:Key"]))
+            };
+    });
 
 builder.Services.AddAuthorization();
-
 ```
 
+This configuration validates:
 
+- Issuer
+- Audience
+- Token lifetime
+- Signing key
 
-\---
+---
 
+## API Endpoints
 
+### Login
 
-\## API Endpoints
-
-
-
-\### Login Endpoint
-
-
-
-\*\*POST\*\*
-
-
-
+```http
+POST /api/Auth/login
 ```
 
-/api/Auth/login
+Authenticates the user and returns a JWT token.
 
-```
-
-
-
-\#### Request Body
-
-
+### Sample Request
 
 ```json
-
 {
-
-&#x20; "username": "admin",
-
-&#x20; "password": "password"
-
+  "username": "admin",
+  "password": "password"
 }
-
 ```
 
-
-
-\#### Response
-
-
+### Sample Response
 
 ```json
-
 {
-
-&#x20; "token": "<jwt-token>"
-
+  "token": "<jwt-token>"
 }
-
 ```
 
+---
 
+### Protected Endpoint
 
-\---
-
-
-
-\### Protected Endpoint
-
-
-
-\*\*GET\*\*
-
-
-
+```http
+GET /api/Secure
 ```
 
-/api/Secure
+Requires a valid JWT token.
 
-```
+Authorization Header:
 
-
-
-\#### Authorization Required
-
-
-
-```
-
+```text
 Bearer <jwt-token>
-
 ```
 
-
-
-\#### Success Response
-
-
+Successful Response:
 
 ```text
-
 You have accessed a protected endpoint!
-
 ```
 
+If no valid token is supplied:
 
-
-\---
-
-
-
-\## Testing Procedure
-
-
-
-\### Step 1: Login
-
-
-
-Send a POST request to:
-
-
-
+```text
+401 Unauthorized
 ```
 
-/api/Auth/login
+---
 
+## Testing Using Swagger
+
+### Step 1 – Generate Token
+
+Execute:
+
+```http
+POST /api/Auth/login
 ```
 
-
-
-using valid credentials:
-
-
+Request:
 
 ```json
-
 {
-
-&#x20; "username": "admin",
-
-&#x20; "password": "password"
-
+  "username": "admin",
+  "password": "password"
 }
-
 ```
 
+A JWT token is returned.
 
+---
 
-A JWT token is generated.
+### Step 2 – Authorize
 
+Click the **Authorize** button in Swagger.
 
+Enter:
 
-\### Step 2: Authorize
-
-
-
-Click the Swagger \*\*Authorize\*\* button and enter:
-
-
-
-```
-
+```text
 Bearer <generated-token>
-
 ```
 
+Click **Authorize**.
 
+---
 
-\### Step 3: Access Protected Endpoint
+### Step 3 – Access Protected API
 
+Execute:
 
-
-Send a GET request to:
-
-
-
+```http
+GET /api/Secure
 ```
 
-/api/Secure
-
-```
-
-
-
-The endpoint returns:
-
-
+Expected Response:
 
 ```text
-
 You have accessed a protected endpoint!
-
 ```
 
-
-
-Without a valid token, the API returns:
-
-
+Without authentication:
 
 ```text
-
 401 Unauthorized
-
 ```
 
+---
 
+## Expected Results
 
-\---
+- JWT token generated successfully.
+- Secure endpoint protected using JWT Authentication.
+- Valid token returns **HTTP 200 OK**.
+- Missing or invalid token returns **HTTP 401 Unauthorized**.
 
+---
 
+## Important Note
 
-\## Output
-
-
-
-\* JWT token generated successfully.
-
-\* Protected endpoint secured using JWT authentication.
-
-\* Unauthorized requests return HTTP 401.
-
-\* Authorized requests can access protected resources.
-
-
-
-\---
-
-
-
-
-
-
-
-
-
-
-
-\## Note
-
-
-
-The original assignment specifies the JWT key as:
-
-
+The original assignment specifies the following JWT key:
 
 ```text
-
 ThisIsASecretKeyForJwtToken
-
 ```
 
-
-
-However, when using the current version of the JWT libraries with .NET 8, this key length is insufficient for the HS256 algorithm and results in the following error:
-
-
+When using the latest JWT libraries with **.NET 8**, this key is too short for the **HS256** signing algorithm and results in the following error:
 
 ```text
-
 IDX10720: Unable to create KeyedHashAlgorithm for algorithm 'HS256',
-
 the key size must be greater than: '256' bits.
-
 ```
-
-
 
 To resolve this issue, the key was updated to:
 
-
-
 ```text
-
 ThisIsASecretKeyForJwtToken12345
-
 ```
 
+The updated key satisfies the minimum security requirement for the HS256 algorithm and allows JWT token generation to work correctly.
 
+---
 
-This longer key satisfies the minimum security requirements for HS256 token signing and allows JWT token generation to work correctly.
+## Key Learnings
 
+- JWT Authentication in ASP.NET Core
+- Token generation
+- Authentication middleware configuration
+- Token validation
+- Protected API endpoints
+- Authorization using `[Authorize]`
+- Swagger authentication testing
 
+---
 
+## Conclusion
 
-
-
-
-
-
-
-
-
-
-
-
-\## Result
-
-
-
-JWT Authentication was successfully implemented in ASP.NET Core Web API. Secure endpoints were protected using the `\[Authorize]` attribute and accessed using a valid JWT token.
-
-
-
+This exercise demonstrates the implementation of JWT Authentication in an ASP.NET Core Web API. Users authenticate through a login endpoint to receive a JWT token, which is then used to access protected resources. The application validates token issuer, audience, expiration, and signing key to ensure secure access. Authentication was successfully verified using Swagger, and unauthorized requests correctly returned **HTTP 401 Unauthorized**.
