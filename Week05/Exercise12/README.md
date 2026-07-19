@@ -1,992 +1,377 @@
-\# Exercise 12 - Conditional Rendering in React (Ticket Booking Application)
+# Exercise 12 - Conditional Rendering in React (Ticket Booking Application)
 
+## Objective
 
+This exercise demonstrates **Conditional Rendering** in React by developing a **Ticket Booking Application**.
 
-\## Objective
+The application displays different user interfaces based on login status:
 
+- Guest users can view flight details.
+- Logged-in users can book tickets.
+- Login and Logout states are managed using React `useState()`.
 
+---
 
-This exercise demonstrates \*\*Conditional Rendering\*\* in React by developing a \*\*Ticket Booking Application\*\*. Guest users can only view flight details, while logged-in users can book tickets. The application switches between Login and Logout states using React state.
-
-
-
-\---
-
-
-
-\## Learning Objectives
-
-
+# Learning Objectives
 
 After completing this exercise, you will be able to:
 
+- Explain Conditional Rendering in React.
+- Understand Element Variables.
+- Prevent components from rendering.
+- Implement Login and Logout functionality.
+- Render components based on conditions.
+- Manage UI using React Hooks (`useState`).
 
+---
 
-\- Explain Conditional Rendering in React.
+# Prerequisites
 
-\- Understand Element Variables.
+Before starting this exercise, ensure the following are installed:
 
-\- Prevent components from rendering.
+- Node.js
+- NPM
+- Visual Studio Code
 
-\- Implement Login and Logout functionality.
+---
 
-\- Render components based on conditions.
+# Software Requirements
 
-\- Manage UI using React Hooks (`useState`).
+- Node.js (Latest LTS Version)
+- NPM
+- Visual Studio Code
+- Google Chrome or any modern web browser
 
+---
 
-
-\---
-
-
-
-\## Prerequisites
-
-
-
-Before starting this exercise, ensure you have the following installed:
-
-
-
-\- Node.js
-
-\- NPM
-
-\- Visual Studio Code
-
-
-
-\---
-
-
-
-\## Software Requirements
-
-
-
-\- Node.js (Latest LTS Version)
-
-\- NPM
-
-\- Visual Studio Code
-
-\- Google Chrome or any modern web browser
-
-
-
-\---
-
-
-
-\# Project Structure
-
-
+# Project Structure
 
 ```
-
 ticketbookingapp/
 
 │
-
-├── node\_modules/
-
+├── node_modules/
 ├── public/
-
 ├── src/
-
 │   ├── App.js
-
 │   ├── App.css
-
 │   ├── Greeting.js
-
 │   ├── Guest.js
-
 │   ├── GuestGreeting.js
-
 │   ├── User.js
-
 │   ├── UserGreeting.js
-
 │   ├── LoginButton.js
-
 │   ├── LogoutButton.js
-
 │   ├── index.js
-
 │   └── ...
-
+│
 ├── package.json
-
 └── README.md
-
 ```
 
+---
 
+# Steps Performed
 
-\---
+## Step 1: Create React Application
 
-
-
-\# Steps Performed
-
-
-
-\## Step 1: Create the React Project
-
-
-
-Open the Visual Studio Code terminal and execute:
-
-
+Create the React project using:
 
 ```bash
-
 npx create-react-app ticketbookingapp
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Step 2: Navigate to the Project
-
-
+## Step 2: Navigate to Project Folder
 
 ```bash
-
 cd ticketbookingapp
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Step 3: Open the Project
-
-
+## Step 3: Open Project in Visual Studio Code
 
 ```bash
-
 code .
-
 ```
 
+---
 
+# Step 4: Implement App Component
 
-\---
+Created `App.js`.
 
+Implemented:
 
+- React `useState()` hook.
+- Login functionality.
+- Logout functionality.
+- Conditional rendering.
 
-\## Step 4: Create App.js
-
-
-
-Replace the contents of \*\*App.js\*\* with:
-
-
+State variable:
 
 ```jsx
-
-import './App.css';
-
-import React, { useState } from "react";
-
-
-
-import Greeting from "./Greeting";
-
-import LoginButton from "./LoginButton";
-
-import LogoutButton from "./LogoutButton";
-
-
-
-function App() {
-
-
-
-&#x20; const \[isLoggedIn, setIsLoggedIn] = useState(false);
-
-
-
-&#x20; function handleLogin() {
-
-&#x20;   setIsLoggedIn(true);
-
-&#x20; }
-
-
-
-&#x20; function handleLogout() {
-
-&#x20;   setIsLoggedIn(false);
-
-&#x20; }
-
-
-
-&#x20; return (
-
-&#x20;   <div className="App">
-
-
-
-&#x20;     <h1>Ticket Booking Application</h1>
-
-
-
-&#x20;     <Greeting isLoggedIn={isLoggedIn} />
-
-
-
-&#x20;     {
-
-&#x20;       isLoggedIn
-
-&#x20;         ? <LogoutButton onClick={handleLogout} />
-
-&#x20;         : <LoginButton onClick={handleLogin} />
-
-&#x20;     }
-
-
-
-&#x20;   </div>
-
-&#x20; );
-
-}
-
-
-
-export default App;
-
+const [isLoggedIn, setIsLoggedIn] = useState(false);
 ```
 
+---
 
+# Step 5: Create Greeting Component
 
-\---
+Created `Greeting.js`.
 
+This component decides which greeting component should be displayed.
 
-
-\## Step 5: Create Greeting.js
-
-
-
-```jsx
-
-import React from "react";
-
-import UserGreeting from "./UserGreeting";
-
-import GuestGreeting from "./GuestGreeting";
-
-
-
-function Greeting(props) {
-
-
-
-&#x20; const isLoggedIn = props.isLoggedIn;
-
-
-
-&#x20; if (isLoggedIn) {
-
-&#x20;   return <UserGreeting />;
-
-&#x20; }
-
-
-
-&#x20; return <GuestGreeting />;
-
-}
-
-
-
-export default Greeting;
+If user is logged in:
 
 ```
-
-
-
-\---
-
-
-
-\## Step 6: Create Guest.js
-
-
-
-```jsx
-
-import React from "react";
-
-
-
-function Guest() {
-
-&#x20; return (
-
-&#x20;   <div>
-
-
-
-&#x20;     <h2>Welcome Guest User</h2>
-
-
-
-&#x20;     <h3>Flight Details</h3>
-
-
-
-&#x20;     <ul>
-
-&#x20;       <li>Flight: Air India AI-101</li>
-
-&#x20;       <li>From: Delhi</li>
-
-&#x20;       <li>To: Mumbai</li>
-
-&#x20;       <li>Time: 10:00 AM</li>
-
-&#x20;     </ul>
-
-
-
-&#x20;     <p>Please login to book tickets.</p>
-
-
-
-&#x20;   </div>
-
-&#x20; );
-
-}
-
-
-
-export default Guest;
-
+UserGreeting
 ```
 
-
-
-\---
-
-
-
-\## Step 7: Create GuestGreeting.js
-
-
-
-```jsx
-
-import React from "react";
-
-
-
-function GuestGreeting() {
-
-&#x20; return (
-
-&#x20;   <h2>Please Sign Up</h2>
-
-&#x20; );
-
-}
-
-
-
-export default GuestGreeting;
+Otherwise:
 
 ```
-
-
-
-\---
-
-
-
-\## Step 8: Create User.js
-
-
-
-```jsx
-
-import React from "react";
-
-
-
-function User() {
-
-&#x20; return (
-
-&#x20;   <div>
-
-
-
-&#x20;     <h2>Welcome Logged In User</h2>
-
-
-
-&#x20;     <h3>Flight Details</h3>
-
-
-
-&#x20;     <ul>
-
-&#x20;       <li>Flight: Air India AI-101</li>
-
-&#x20;       <li>From: Delhi</li>
-
-&#x20;       <li>To: Mumbai</li>
-
-&#x20;       <li>Time: 10:00 AM</li>
-
-&#x20;     </ul>
-
-
-
-&#x20;     <button>
-
-&#x20;       Book Ticket
-
-&#x20;     </button>
-
-
-
-&#x20;   </div>
-
-&#x20; );
-
-}
-
-
-
-export default User;
-
+GuestGreeting
 ```
 
+---
 
+# Step 6: Create Guest Components
 
-\---
+Created:
 
+- `Guest.js`
+- `GuestGreeting.js`
 
+Guest users can:
 
-\## Step 9: Create UserGreeting.js
+- View flight details.
+- See login message.
+- Cannot book tickets.
 
+---
 
+# Step 7: Create User Components
 
-```jsx
+Created:
 
-import React from "react";
+- `User.js`
+- `UserGreeting.js`
 
+Logged-in users can:
 
+- View flight details.
+- Book tickets.
 
-function UserGreeting() {
+---
 
-&#x20; return (
+# Step 8: Create Login Button Component
 
-&#x20;   <h2>Welcome Back</h2>
+Created `LoginButton.js`.
 
-&#x20; );
+Functionality:
 
-}
+- Changes guest state to logged-in state.
 
+---
 
+# Step 9: Create Logout Button Component
 
-export default UserGreeting;
+Created `LogoutButton.js`.
 
-```
+Functionality:
 
+- Changes logged-in state back to guest state.
 
+---
 
-\---
+# Step 10: Run Application
 
-
-
-\## Step 10: Create LoginButton.js
-
-
-
-```jsx
-
-import React from "react";
-
-
-
-function LoginButton(props) {
-
-&#x20; return (
-
-&#x20;   <button onClick={props.onClick}>
-
-&#x20;     Login
-
-&#x20;   </button>
-
-&#x20; );
-
-}
-
-
-
-export default LoginButton;
-
-```
-
-
-
-\---
-
-
-
-\## Step 11: Create LogoutButton.js
-
-
-
-```jsx
-
-import React from "react";
-
-
-
-function LogoutButton(props) {
-
-&#x20; return (
-
-&#x20;   <button onClick={props.onClick}>
-
-&#x20;     Logout
-
-&#x20;   </button>
-
-&#x20; );
-
-}
-
-
-
-export default LogoutButton;
-
-```
-
-
-
-\---
-
-
-
-\## Step 12: App.css
-
-
-
-```css
-
-.App {
-
-&#x20; text-align: center;
-
-}
-
-
-
-.App-logo {
-
-&#x20; height: 40vmin;
-
-&#x20; pointer-events: none;
-
-}
-
-
-
-@media (prefers-reduced-motion: no-preference) {
-
-&#x20; .App-logo {
-
-&#x20;   animation: App-logo-spin infinite 20s linear;
-
-&#x20; }
-
-}
-
-
-
-.App-header {
-
-&#x20; background-color: #282c34;
-
-&#x20; min-height: 100vh;
-
-&#x20; display: flex;
-
-&#x20; flex-direction: column;
-
-&#x20; align-items: center;
-
-&#x20; justify-content: center;
-
-&#x20; font-size: calc(10px + 2vmin);
-
-&#x20; color: white;
-
-}
-
-
-
-.App-link {
-
-&#x20; color: #61dafb;
-
-}
-
-
-
-@keyframes App-logo-spin {
-
-&#x20; from {
-
-&#x20;   transform: rotate(0deg);
-
-&#x20; }
-
-
-
-&#x20; to {
-
-&#x20;   transform: rotate(360deg);
-
-&#x20; }
-
-}
-
-```
-
-
-
-\---
-
-
-
-\## Step 13: Run the Application
-
-
+Execute:
 
 ```bash
-
 npm start
-
 ```
 
+---
 
+# Step 11: Open Application
 
-\---
-
-
-
-\## Step 14: Open in Browser
-
-
+Open browser:
 
 ```
-
 http://localhost:3000
-
 ```
 
+---
 
+# Expected Output
 
-\---
+## Initially (Guest User)
 
-
-
-\# Expected Output
-
-
-
-\### Initially (Guest User)
-
-
+Displayed:
 
 ```
-
 Ticket Booking Application
-
-
 
 Please Sign Up
 
-
-
 Login
-
 ```
 
+---
 
+## After Clicking Login
 
-After clicking \*\*Login\*\*:
-
-
+Displayed:
 
 ```
-
 Ticket Booking Application
-
-
 
 Welcome Back
 
-
-
 Logout
-
 ```
 
+---
 
+## After Clicking Logout
 
-When \*\*Logout\*\* is clicked, the application returns to the Guest page.
+The application returns to Guest User state.
 
+---
 
+# React Concepts
 
-> \*\*Note:\*\* If you want to display the complete `Guest` and `User` components (including flight details and booking button), modify `Greeting.js` to render `<Guest />` and `<User />` instead of `<GuestGreeting />` and `<UserGreeting />`.
+## Conditional Rendering
 
-
-
-\---
-
-
-
-\# React Concepts
-
-
-
-\## What is Conditional Rendering?
-
-
-
-Conditional Rendering allows React to display different UI elements based on a condition.
-
-
+Conditional Rendering allows React components to display different UI elements based on a condition.
 
 Example:
 
-
-
 ```jsx
-
 {
-
-&#x20; isLoggedIn
-
-&#x20;   ? <LogoutButton />
-
-&#x20;   : <LoginButton />
-
+  isLoggedIn
+    ? <LogoutButton />
+    : <LoginButton />
 }
-
 ```
 
+If the condition is true, Logout button is displayed.
 
+Otherwise, Login button is displayed.
 
-\---
+---
 
+# Methods of Conditional Rendering
 
+React supports different methods:
 
-\## Ways to Perform Conditional Rendering
+- if...else statements
+- Ternary Operator
+- Logical AND (`&&`)
+- Element Variables
+- Returning `null`
 
+---
 
-
-\- `if...else`
-
-\- Ternary Operator (`condition ? true : false`)
-
-\- Logical AND (`\&\&`)
-
-\- Element Variables
-
-\- Returning `null`
-
-
-
-\---
-
-
-
-\## Element Variables
-
-
+# Element Variables
 
 Element variables store JSX elements before rendering.
 
-
-
 Example:
 
-
-
 ```jsx
-
 let button;
 
-
-
-if (isLoggedIn) {
-
-&#x20; button = <LogoutButton />;
-
-} else {
-
-&#x20; button = <LoginButton />;
-
-}
-
-
-
-return (
-
-&#x20; <div>
-
-&#x20;   {button}
-
-&#x20; </div>
-
-);
-
-```
-
-
-
-\---
-
-
-
-\## Preventing Components from Rendering
-
-
-
-A component can return `null` to prevent rendering.
-
-
-
-Example:
-
-
-
-```jsx
-
-function Example(props) {
-
-
-
-&#x20; if (!props.show) {
-
-&#x20;   return null;
-
-&#x20; }
-
-
-
-&#x20; return <h2>Hello React</h2>;
-
-}
-
-```
-
-
-
-\---
-
-
-
-\## React Hook - useState()
-
-
-
-`useState()` is a Hook used to store and update state in Function Components.
-
-
-
-Example:
-
-
-
-```jsx
-
-const \[isLoggedIn, setIsLoggedIn] = useState(false);
-
-```
-
-
-
-\---
-
-
-
-\## Conditional Rendering using Ternary Operator
-
-
-
-Example:
-
-
-
-```jsx
-
+if(isLoggedIn)
 {
-
-&#x20; isLoggedIn
-
-&#x20;   ? <LogoutButton />
-
-&#x20;   : <LoginButton />
-
+    button = <LogoutButton />;
 }
-
+else
+{
+    button = <LoginButton />;
+}
 ```
 
+The stored element can be rendered later.
 
+---
 
-If the user is logged in, the \*\*Logout\*\* button is displayed; otherwise, the \*\*Login\*\* button is displayed.
+# Preventing Components from Rendering
 
+A component can return `null` when it should not display anything.
 
+Example:
 
-\---
+```jsx
+function Example(props)
+{
+    if(!props.show)
+    {
+        return null;
+    }
 
+    return <h2>Hello React</h2>;
+}
+```
 
+---
 
-\## Advantages of Conditional Rendering
+# React Hook - useState()
 
+`useState()` is a React Hook used to store and update state values in functional components.
 
+Example:
 
-\- Displays UI dynamically.
+```jsx
+const [isLoggedIn, setIsLoggedIn] = useState(false);
+```
 
-\- Improves user experience.
+Here:
 
-\- Reduces unnecessary rendering.
+- `isLoggedIn` stores current login status.
+- `setIsLoggedIn` updates the state.
 
-\- Makes applications interactive.
+---
 
-\- Simplifies decision-based UI.
+# Conditional Rendering Using Ternary Operator
 
+Example:
 
+```jsx
+{
+    isLoggedIn
+        ? <LogoutButton />
+        : <LoginButton />
+}
+```
 
-\---
+The UI changes dynamically based on login status.
 
+---
 
+# Advantages of Conditional Rendering
 
-\## Result
+- Creates dynamic user interfaces.
+- Improves user experience.
+- Displays content based on user actions.
+- Reduces unnecessary rendering.
+- Makes applications interactive.
+- Simplifies decision-based UI.
 
+---
 
+# Result
 
-Successfully created a React application named \*\*ticketbookingapp\*\*, implemented \*\*Conditional Rendering\*\* using React state, displayed different UI for guest and logged-in users, switched between \*\*Login\*\* and \*\*Logout\*\* pages dynamically, and demonstrated the use of `useState`, element variables, and conditional rendering techniques.
+Successfully created a React application named **ticketbookingapp** and implemented:
 
+- Conditional Rendering.
+- Login and Logout functionality.
+- React `useState()` Hook.
+- Element variables.
+- Dynamic UI updates based on user state.
+
+The application successfully switches between Guest User and Logged-In User views using React conditional rendering techniques.
