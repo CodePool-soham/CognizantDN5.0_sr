@@ -1,1004 +1,613 @@
-\# Exercise 04 - React Component Lifecycle (Blog App)
+# Exercise 04 - React Component Lifecycle (Blog App)
 
+## 📌 Project Overview
 
+This project demonstrates the implementation of **React Component Lifecycle Methods** using a **Class Component**. A simple **Blog Application** is developed that fetches posts from an online REST API using the `componentDidMount()` lifecycle method and handles runtime errors using `componentDidCatch()`.
 
-\## Objective
+The application uses React state to store and display dynamic blog post data fetched from an external API.
 
+---
 
+## 🎯 Objectives Covered
 
-This exercise demonstrates the use of \*\*React Component Lifecycle Methods\*\* in a class component. A Blog application is developed that fetches posts from an online REST API using the \*\*componentDidMount()\*\* lifecycle hook and handles runtime errors using \*\*componentDidCatch()\*\*.
+- Understand React Component Lifecycle.
+- Learn different phases of component lifecycle.
+- Understand lifecycle methods used in Class Components.
+- Implement `componentDidMount()`.
+- Implement `componentDidCatch()`.
+- Fetch external data using Fetch API.
+- Store API response using React State.
+- Display dynamic data using JSX.
 
+---
 
+## 🧩 Technologies Used
 
-\---
+- React
+- JavaScript (ES6)
+- JSX
+- Fetch API
+- CSS
+- Node.js
+- NPM
+- Create React App
+- Visual Studio Code
 
+---
 
+## 📋 Prerequisites
 
-\## Learning Objectives
+Before starting this exercise, ensure the following software is installed:
 
+- Node.js
+- NPM
+- Visual Studio Code
+- Google Chrome (or any modern browser)
 
+---
 
-After completing this exercise, you will be able to:
+# 🚀 Project Setup
 
+## Step 1: Create React Application
 
+Create a new React project:
 
-\- Explain the need and benefits of the React Component Lifecycle.
-
-\- Identify the various lifecycle hook methods.
-
-\- Understand the sequence of rendering a React component.
-
-\- Implement the `componentDidMount()` lifecycle hook.
-
-\- Implement the `componentDidCatch()` lifecycle hook.
-
-\- Fetch data from an API using the Fetch API.
-
-\- Display dynamic data using React state.
-
-
-
-\---
-
-
-
-\## Prerequisites
-
-
-
-Before starting this exercise, ensure you have the following installed:
-
-
-
-\- Node.js
-
-\- NPM
-
-\- Visual Studio Code
-
-
-
-\---
-
-
-
-\## Software Requirements
-
-
-
-\- Node.js (Latest LTS Version)
-
-\- NPM
-
-\- Visual Studio Code
-
-\- Google Chrome or any modern web browser
-
-
-
-\---
-
-
-
-\# Project Structure
-
-
-
+```bash
+npx create-react-app blogapp
 ```
 
-blogapp/
+---
+
+## Step 2: Navigate to Project
+
+```bash
+cd blogapp
+```
+
+---
+
+## Step 3: Open Project in VS Code
+
+```bash
+code .
+```
+
+---
+
+## Step 4: Run Application
+
+```bash
+npm start
+```
+
+Application runs at:
+
+```
+http://localhost:3000
+```
+
+---
+
+# 📁 Project Structure
+
+```text
+blogapp
 
 │
-
-├── node\_modules/
-
-├── public/
-
-├── src/
-
+├── public
+│
+├── src
+│   │
 │   ├── App.js
-
 │   ├── App.css
-
 │   ├── Post.js
-
 │   ├── Posts.js
-
 │   ├── index.js
-
 │   └── ...
-
+│
 ├── package.json
-
 └── README.md
-
 ```
 
+---
 
+# 📝 Post Model
 
-\---
+Create `Post.js`.
 
+This class represents a blog post object.
 
-
-\# Steps Performed
-
-
-
-\## Step 1: Create the React Project
-
-
-
-Open the Visual Studio Code terminal and execute:
-
-
-
-```bash
-
-npx create-react-app blogapp
-
-```
-
-
-
-\---
-
-
-
-\## Step 2: Navigate to the Project
-
-
-
-```bash
-
-cd blogapp
-
-```
-
-
-
-\---
-
-
-
-\## Step 3: Open the Project
-
-
-
-```bash
-
-code .
-
-```
-
-
-
-\---
-
-
-
-\## Step 4: Create Post.js
-
-
-
-Create \*\*Post.js\*\* inside the \*\*src\*\* folder.
-
-
-
-```jsx
-
+```javascript
 class Post {
 
-&#x20;   constructor(id, title, body) {
+    constructor(id, title, body) {
 
-&#x20;       this.id = id;
+        this.id = id;
+        this.title = title;
+        this.body = body;
 
-&#x20;       this.title = title;
-
-&#x20;       this.body = body;
-
-&#x20;   }
+    }
 
 }
 
-
-
 export default Post;
-
 ```
 
+---
 
+# 📚 Posts Component
 
-\---
+Create `Posts.js`.
 
+This component:
 
-
-\## Step 5: Create Posts.js
-
-
-
-Create \*\*Posts.js\*\* inside the \*\*src\*\* folder.
-
-
+- Maintains blog post data using state.
+- Fetches posts from an API.
+- Displays posts dynamically.
+- Handles runtime errors.
 
 ```jsx
-
 import React, { Component } from "react";
-
 
 
 class Posts extends Component {
 
 
+    constructor(props) {
 
-&#x20;   constructor(props) {
+        super(props);
 
-&#x20;       super(props);
+        this.state = {
 
+            posts: []
 
+        };
 
-&#x20;       this.state = {
+    }
 
-&#x20;           posts: \[]
 
-&#x20;       };
+    loadPosts() {
 
-&#x20;   }
+        fetch("https://jsonplaceholder.typicode.com/posts")
 
+        .then(response => response.json())
 
+        .then(data => {
 
-&#x20;   loadPosts() {
+            this.setState({
 
+                posts: data
 
+            });
 
-&#x20;       fetch("https://jsonplaceholder.typicode.com/posts")
+        })
 
-&#x20;           .then((response) => response.json())
+        .catch(error => {
 
-&#x20;           .then((data) => {
+            console.log(error);
 
-&#x20;               this.setState({
+        });
 
-&#x20;                   posts: data
+    }
 
-&#x20;               });
 
-&#x20;           })
 
-&#x20;           .catch((error) => {
+    componentDidMount() {
 
-&#x20;               console.log(error);
+        this.loadPosts();
 
-&#x20;           });
+    }
 
 
 
-&#x20;   }
+    componentDidCatch(error) {
 
+        alert(error);
 
+    }
 
-&#x20;   componentDidMount() {
 
-&#x20;       this.loadPosts();
 
-&#x20;   }
+    render() {
 
+        return (
 
+            <div>
 
-&#x20;   componentDidCatch(error) {
+                <h1>Blog Posts</h1>
 
-&#x20;       alert(error);
 
-&#x20;   }
+                {
 
+                    this.state.posts.map(post => (
 
+                        <div key={post.id}>
 
-&#x20;   render() {
+                            <h2>{post.title}</h2>
 
+                            <p>{post.body}</p>
 
+                            <hr />
 
-&#x20;       return (
+                        </div>
 
+                    ))
 
+                }
 
-&#x20;           <div>
 
+            </div>
 
+        );
 
-&#x20;               <h1>Blog Posts</h1>
-
-
-
-&#x20;               {
-
-&#x20;                   this.state.posts.map((post) => (
-
-
-
-&#x20;                       <div key={post.id}>
-
-
-
-&#x20;                           <h2>{post.title}</h2>
-
-
-
-&#x20;                           <p>{post.body}</p>
-
-
-
-&#x20;                           <hr />
-
-
-
-&#x20;                       </div>
-
-
-
-&#x20;                   ))
-
-&#x20;               }
-
-
-
-&#x20;           </div>
-
-
-
-&#x20;       );
-
-
-
-&#x20;   }
-
-
+    }
 
 }
 
 
-
 export default Posts;
-
 ```
 
+---
 
+# 🖥️ App.js
 
-\---
-
-
-
-\## Step 6: Modify App.js
-
-
-
-Replace the existing code with:
-
-
+The main component renders the `Posts` component.
 
 ```jsx
-
 import './App.css';
-
 import Posts from './Posts';
-
 
 
 function App() {
 
-&#x20; return (
+    return (
 
-&#x20;   <div className="App">
+        <div className="App">
 
-&#x20;     <Posts />
+            <Posts />
 
-&#x20;   </div>
+        </div>
 
-&#x20; );
+    );
 
 }
-
 
 
 export default App;
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Step 7: App.css
-
-
+# 🎨 App.css
 
 ```css
-
 .App {
 
-&#x20; text-align: center;
+    text-align: center;
 
 }
-
 
 
 .App-logo {
 
-&#x20; height: 40vmin;
+    height: 40vmin;
 
-&#x20; pointer-events: none;
+    pointer-events: none;
 
 }
-
 
 
 @media (prefers-reduced-motion: no-preference) {
 
-&#x20; .App-logo {
+    .App-logo {
 
-&#x20;   animation: App-logo-spin infinite 20s linear;
+        animation: App-logo-spin infinite 20s linear;
 
-&#x20; }
+    }
 
 }
-
 
 
 .App-header {
 
-&#x20; background-color: #282c34;
+    background-color: #282c34;
 
-&#x20; min-height: 100vh;
+    min-height: 100vh;
 
-&#x20; display: flex;
+    display: flex;
 
-&#x20; flex-direction: column;
+    flex-direction: column;
 
-&#x20; align-items: center;
+    align-items: center;
 
-&#x20; justify-content: center;
+    justify-content: center;
 
-&#x20; font-size: calc(10px + 2vmin);
+    font-size: calc(10px + 2vmin);
 
-&#x20; color: white;
+    color: white;
 
 }
-
 
 
 .App-link {
 
-&#x20; color: #61dafb;
+    color: #61dafb;
 
 }
-
 
 
 @keyframes App-logo-spin {
 
-&#x20; from {
+    from {
 
-&#x20;   transform: rotate(0deg);
+        transform: rotate(0deg);
 
-&#x20; }
+    }
 
 
+    to {
 
-&#x20; to {
+        transform: rotate(360deg);
 
-&#x20;   transform: rotate(360deg);
-
-&#x20; }
+    }
 
 }
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Step 8: Run the Application
-
-
-
-```bash
-
-npm start
-
-```
-
-
-
-\---
-
-
-
-\## Step 9: Open in Browser
-
-
-
-Open your browser and visit:
-
-
-
-```
-
-http://localhost:3000
-
-```
-
-
-
-\---
-
-
-
-\# Expected Output
-
-
+# 🧪 Expected Output
 
 The application fetches blog posts from:
 
-
-
 ```
-
 https://jsonplaceholder.typicode.com/posts
-
 ```
 
+Displayed output:
 
-
-and displays each post as:
-
-
-
-```
-
+```text
 Blog Posts
-
 
 
 Title of Post 1
 
-
-
 Body of Post 1
 
-
-
-\--------------------------------
-
+--------------------------------
 
 
 Title of Post 2
 
-
-
 Body of Post 2
 
-
-
-\--------------------------------
-
+--------------------------------
 ```
 
+---
 
+# React Concepts
 
-\---
+## What is Component Lifecycle?
 
+Component Lifecycle represents the different stages a React component goes through from creation to removal from the DOM.
 
+Lifecycle methods allow developers to execute code at specific stages of a component's life.
 
-\# React Concepts
+---
 
+# Need for Component Lifecycle
 
+Lifecycle methods are required for:
 
-\## What is Component Lifecycle?
+- Executing code at specific stages.
+- Fetching API data.
+- Updating UI dynamically.
+- Managing resources.
+- Handling errors.
+- Improving application performance.
 
+---
 
+# Benefits of Lifecycle Methods
 
-The Component Lifecycle refers to the different stages a React component goes through from creation until it is removed from the DOM.
+- Better application control.
+- Cleaner code structure.
+- Efficient data loading.
+- Easier debugging.
+- Improved user experience.
+- Proper resource management.
 
+---
 
+# React Lifecycle Phases
 
-Lifecycle methods allow developers to execute code at different stages of a component's life.
+React Class Components have three major lifecycle phases.
 
+---
 
+## 1. Mounting Phase
 
-\---
+Occurs when a component is created and added to the DOM.
 
+Methods:
 
+- constructor()
+- render()
+- componentDidMount()
 
-\## Need for Component Lifecycle
+Flow:
 
+```
+constructor()
 
+        ↓
 
-\- Execute code at specific stages.
+render()
 
-\- Fetch data from APIs.
+        ↓
 
-\- Update the UI dynamically.
+componentDidMount()
+```
 
-\- Improve application performance.
+---
 
-\- Handle errors gracefully.
-
-\- Manage resources efficiently.
-
-
-
-\---
-
-
-
-\## Benefits of Lifecycle Methods
-
-
-
-\- Better code organization.
-
-\- Automatic execution of specific tasks.
-
-\- Efficient data loading.
-
-\- Easier debugging.
-
-\- Improved user experience.
-
-\- Proper cleanup of resources.
-
-
-
-\---
-
-
-
-\# React Lifecycle Phases
-
-
-
-React components pass through three major phases:
-
-
-
-\### 1. Mounting
-
-
-
-Occurs when the component is created and inserted into the DOM.
-
-
-
-Important methods:
-
-
-
-\- constructor()
-
-\- render()
-
-\- componentDidMount()
-
-
-
-\---
-
-
-
-\### 2. Updating
-
-
+## 2. Updating Phase
 
 Occurs when state or props change.
 
+Methods:
 
+- shouldComponentUpdate()
+- render()
+- componentDidUpdate()
 
-Important methods:
+Flow:
 
+```
+shouldComponentUpdate()
 
+        ↓
 
-\- shouldComponentUpdate()
+render()
 
-\- render()
+        ↓
 
-\- componentDidUpdate()
+componentDidUpdate()
+```
 
+---
 
-
-\---
-
-
-
-\### 3. Unmounting
-
-
+## 3. Unmounting Phase
 
 Occurs when the component is removed from the DOM.
 
+Method:
 
+- componentWillUnmount()
 
-Important method:
+---
 
-
-
-\- componentWillUnmount()
-
-
-
-\---
-
-
-
-\## Lifecycle Hook Methods
-
-
+# Lifecycle Methods
 
 | Method | Purpose |
-
-|---------|---------|
-
+|--------|---------|
 | constructor() | Initializes state |
-
 | render() | Returns JSX |
-
-| componentDidMount() | Executes after component is mounted |
-
+| componentDidMount() | Executes after mounting |
 | shouldComponentUpdate() | Controls re-rendering |
-
 | componentDidUpdate() | Executes after updates |
+| componentWillUnmount() | Cleans resources |
+| componentDidCatch() | Handles errors |
 
-| componentWillUnmount() | Cleans up resources |
+---
 
-| componentDidCatch() | Handles runtime errors |
+# componentDidMount()
 
+`componentDidMount()` executes after the component is inserted into the DOM.
 
+It is commonly used for:
 
-\---
-
-
-
-\## componentDidMount()
-
-
-
-`componentDidMount()` is invoked immediately after the component is inserted into the DOM.
-
-
-
-It is commonly used to:
-
-
-
-\- Fetch API data
-
-\- Make HTTP requests
-
-\- Start timers
-
-\- Initialize third-party libraries
-
-
+- API calls
+- HTTP requests
+- Timers
+- Third-party library initialization
 
 Example:
 
-
-
 ```jsx
-
 componentDidMount() {
 
-&#x20;   this.loadPosts();
+    this.loadPosts();
 
 }
-
 ```
 
+---
 
+# componentDidCatch()
 
-\---
-
-
-
-\## componentDidCatch()
-
-
-
-`componentDidCatch()` is an Error Boundary lifecycle method used to catch JavaScript errors in child components and prevent the application from crashing.
-
-
+`componentDidCatch()` catches runtime errors in child components and prevents application crashes.
 
 Example:
 
-
-
 ```jsx
-
 componentDidCatch(error) {
 
-&#x20;   alert(error);
+    alert(error);
 
 }
-
 ```
 
+---
 
+# render() Method
 
-\---
-
-
-
-\## render() Method
-
-
-
-The `render()` method returns the JSX that React displays in the browser.
-
-
+The `render()` method returns JSX that React displays in the browser.
 
 Example:
 
-
-
 ```jsx
+render(){
 
-render() {
+    return(
 
-&#x20;   return (
+        <h1>Blog Posts</h1>
 
-&#x20;       <h1>Blog Posts</h1>
-
-&#x20;   );
+    );
 
 }
-
 ```
 
+---
 
+# Fetch API
 
-\---
-
-
-
-\## Rendering Sequence of a Class Component
-
-
-
-The sequence followed during the initial rendering is:
-
-
-
-```
-
-constructor()
-
-
-
-↓
-
-
-
-render()
-
-
-
-↓
-
-
-
-componentDidMount()
-
-```
-
-
-
-When the component updates:
-
-
-
-```
-
-shouldComponentUpdate()
-
-
-
-↓
-
-
-
-render()
-
-
-
-↓
-
-
-
-componentDidUpdate()
-
-```
-
-
-
-When the component is removed:
-
-
-
-```
-
-componentWillUnmount()
-
-```
-
-
-
-\---
-
-
-
-\## Fetch API
-
-
-
-The Fetch API is used to retrieve data from a web server asynchronously.
-
-
+Fetch API is used to retrieve data asynchronously from a server.
 
 Example:
 
-
-
-```jsx
-
+```javascript
 fetch("https://jsonplaceholder.typicode.com/posts")
 
-&#x20;   .then(response => response.json())
+.then(response => response.json())
 
-&#x20;   .then(data => {
+.then(data => {
 
-&#x20;       this.setState({
+    this.setState({
 
-&#x20;           posts: data
+        posts:data
 
-&#x20;       });
+    });
 
-&#x20;   });
-
+});
 ```
 
+---
 
+# Advantages of Lifecycle Methods
 
-\---
+- Automatic API execution.
+- Better state management.
+- Improved performance.
+- Cleaner application structure.
+- Efficient error handling.
+- Better control over component behavior.
 
+---
 
+# Key Learnings
 
-\## Advantages of Lifecycle Methods
+- Learned React Component Lifecycle.
+- Implemented Class Components.
+- Used `componentDidMount()` for API data fetching.
+- Used React State for storing dynamic data.
+- Implemented error handling using `componentDidCatch()`.
+- Displayed external API data dynamically.
 
+---
 
+# ✅ Result
 
-\- Automatic API calls
-
-\- Better state management
-
-\- Improved performance
-
-\- Cleaner code
-
-\- Easy error handling
-
-\- Better application control
-
-
-
-\---
-
-
-
-\## Result
-
-
-
-Successfully created a React application named \*\*blogapp\*\*, implemented the \*\*componentDidMount()\*\* lifecycle hook to fetch blog posts from an online REST API, used \*\*componentDidCatch()\*\* for error handling, and displayed the fetched blog posts dynamically using React state.
-
+Successfully created a React application named **blogapp**, implemented **Component Lifecycle Methods**, fetched blog posts using the **componentDidMount()** lifecycle hook, handled errors using **componentDidCatch()**, and displayed dynamic blog content using React state.
