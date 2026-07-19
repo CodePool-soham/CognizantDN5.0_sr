@@ -1,0 +1,35 @@
+.st2 {
+  border: 2px solid green;
+  width: 30%;
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px;
+  padding: 10px;
+}
+
+.v1 {
+  border-left: 4px solid green;
+  width: 30%;
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px;
+  padding: 10px;
+}
+
+.mystyle1 {
+  border: 2px solid green;
+  width: 30%;
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px;
+  padding: 10px;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+li {
+  margin-bottom: 15px;
+}
