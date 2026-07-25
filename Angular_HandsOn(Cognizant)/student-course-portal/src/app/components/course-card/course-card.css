@@ -1,0 +1,21 @@
+.card {
+  border: 2px solid rgb(0, 0, 0);
+  padding: 20px;
+  margin: 15px;
+  border-radius: 10px;
+}
+
+
+.card--enrolled {
+  background-color: lightgreen;
+}
+
+
+.card--full {
+  border-left: 8px solid blue;
+}
+
+
+.expanded {
+  height: 250px;
+}

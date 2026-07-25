@@ -1,0 +1,44 @@
+<p>
+Welcome to the Student Course Portal.
+</p>
+
+
+<h3>
+Available Courses: {{ coursesAvailable }}
+</h3>
+
+
+<button 
+[disabled]="!isPortalActive"
+(click)="onEnrollClick()">
+
+Enroll Now
+
+</button>
+
+
+<p>{{ message }}</p>
+
+
+<hr>
+
+
+<h3>Search Courses</h3>
+
+
+<input 
+[(ngModel)]="searchTerm"
+placeholder="Search course">
+
+
+<p>
+Searching for: {{ searchTerm }}
+</p>
+
+<hr>
+
+<app-course-summary-widget></app-course-summary-widget>
+
+<hr>
+
+<app-notification></app-notification>

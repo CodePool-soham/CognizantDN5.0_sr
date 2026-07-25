@@ -1,0 +1,137 @@
+<div
+  class="card"
+  (click)="openCourse()"
+  [ngClass]="cardClasses"
+  [ngStyle]="{
+    'border-left': '6px solid ' +
+    (
+      course.gradeStatus === 'passed'
+        ? 'green'
+        : course.gradeStatus === 'failed'
+        ? 'red'
+        : 'gray'
+    )
+  }"
+  appHighlight>
+
+
+  <h2>
+    {{ course.name }}
+  </h2>
+
+
+  <p>
+
+    <b>Code:</b>
+
+    {{ course.code }}
+
+  </p>
+
+
+  <p>
+
+    <b>Credits:</b>
+
+    {{ course.credits | creditLabel }}
+
+  </p>
+
+
+  <div [ngSwitch]="course.gradeStatus">
+
+
+    <span *ngSwitchCase="'passed'">
+
+      ✅ Passed
+
+    </span>
+
+
+    <span *ngSwitchCase="'failed'">
+
+      ❌ Failed
+
+    </span>
+
+
+    <span *ngSwitchCase="'pending'">
+
+      ⏳ Pending
+
+    </span>
+
+
+  </div>
+
+
+  <br>
+
+
+  <!-- Enrollment Button -->
+
+  <button
+    (click)="$event.stopPropagation(); toggleEnrollment()">
+
+
+    <ng-container
+      *ngIf="enrolledIds$ | async as enrolledIds">
+
+
+      {{
+        enrolledIds.includes(course.id)
+
+          ? 'Unenroll'
+
+          : 'Enroll'
+
+      }}
+
+
+    </ng-container>
+
+
+  </button>
+
+
+  <!-- Details Button -->
+
+  <button
+    (click)="$event.stopPropagation(); toggleDetails()">
+
+
+    {{
+      isExpanded
+
+        ? 'Hide Details'
+
+        : 'Show Details'
+
+    }}
+
+
+  </button>
+
+
+  <!-- Course Details -->
+
+  <div
+    *ngIf="isExpanded">
+
+
+    <hr>
+
+
+    <p>
+
+      Course ID:
+
+      {{ course.id }}
+
+    </p>
+
+
+  </div>
+
+
+</div>

@@ -1,0 +1,60 @@
+{
+  "courses": [
+    {
+      "id": "1",
+      "name": "Angular Development",
+      "code": "ANG101",
+      "credits": 4,
+      "gradeStatus": "passed"
+    },
+    {
+      "id": "4",
+      "name": "Machine Learning",
+      "code": "ML101",
+      "credits": 5,
+      "gradeStatus": "pending"
+    },
+    {
+      "id": "5",
+      "name": "Web Development",
+      "code": "WEB101",
+      "credits": 3,
+      "gradeStatus": "passed"
+    },
+    {
+      "id": "nlBW-5Z7HoE"
+    },
+    {
+      "name": "React Development",
+      "code": "REACT101",
+      "credits": 3,
+      "gradeStatus": "pending",
+      "id": "mP6XPqULA4M"
+    }
+  ],
+ "students": [
+  {
+    "id": "1",
+    "name": "Rambo",
+    "courseId": "1"
+  },
+  {
+    "id": "2",
+    "name": "Peter Parker",
+    "courseId": "1"
+  },
+  {
+    "id": "3",
+    "name": "Bruce Wayne",
+    "courseId": "4"
+  }
+],
+  "enrollments": [
+    {
+      "id": "1",
+      "studentId": 1,
+      "courseId": 1
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

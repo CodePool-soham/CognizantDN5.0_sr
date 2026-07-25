@@ -1,0 +1,54 @@
+<h2>Course Details</h2>
+
+
+<div *ngIf="course">
+
+  <p>
+    <b>ID:</b> {{course.id}}
+  </p>
+
+  <p>
+    <b>Name:</b> {{course.name}}
+  </p>
+
+  <p>
+    <b>Code:</b> {{course.code}}
+  </p>
+
+  <p>
+    <b>Credits:</b> {{course.credits}}
+  </p>
+
+  <p>
+    <b>Status:</b> {{course.gradeStatus}}
+  </p>
+
+
+</div>
+
+
+
+<h3>Enrolled Students</h3>
+
+
+<div *ngIf="students.length > 0">
+
+  <ul>
+
+    <li *ngFor="let student of students">
+
+      {{student.name}}
+
+    </li>
+
+  </ul>
+
+</div>
+
+
+
+<div *ngIf="students.length === 0">
+
+  <p>No students enrolled.</p>
+
+</div>

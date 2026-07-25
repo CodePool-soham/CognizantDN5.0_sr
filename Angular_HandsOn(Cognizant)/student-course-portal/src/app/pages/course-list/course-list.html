@@ -1,0 +1,107 @@
+<!-- Error Message -->
+
+<p
+  *ngIf="errorMessage$ | async as error"
+  class="error">
+
+  {{ error }}
+
+</p>
+
+
+<!-- Loading Message -->
+
+<p *ngIf="isLoading$ | async">
+
+  Loading courses...
+
+</p>
+
+
+<!-- Main Content -->
+
+<div *ngIf="!(isLoading$ | async)">
+
+
+  <h3>Search Courses</h3>
+
+
+  <input
+
+    [(ngModel)]="searchTerm"
+
+    placeholder="Search course">
+
+
+  <button
+    (click)="onSearch()">
+
+    Search
+
+  </button>
+
+
+  <p>
+
+    Search Query:
+    {{ searchTerm }}
+
+  </p>
+
+
+  <hr>
+
+
+  <!-- Total Courses -->
+
+  <p>
+
+    Total courses:
+    {{ (courses$ | async)?.length }}
+
+  </p>
+
+
+  <!-- Courses -->
+
+  <ng-container
+
+    *ngIf="courses$ | async as courses">
+
+
+    <ng-container
+
+      *ngIf="courses.length > 0;
+      else noCourses">
+
+
+      <app-course-card
+
+        *ngFor="let c of courses;
+        trackBy: trackByCourseId"
+
+        [course]="c">
+
+      </app-course-card>
+
+
+    </ng-container>
+
+
+  </ng-container>
+
+
+  <!-- No Courses -->
+
+  <ng-template #noCourses>
+
+    <p>
+
+      No courses available.
+
+    </p>
+
+  </ng-template>
+
+
+</div>
