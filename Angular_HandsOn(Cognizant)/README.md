@@ -1,193 +1,134 @@
-Yes. Copy **everything inside this single code block** and paste it into your `README.md` file:
-
-````markdown
 # 🎓 Student Course Portal
 
-## Digital Nurture 5.0 — Angular Hands-On Exercises
+> **Digital Nurture 5.0 – Angular Hands-On Exercises**
 
-A complete Angular Student Course Portal developed as part of the Cognizant Digital Nurture 5.0 Angular Hands-On Exercise Programme.
-
-This project demonstrates the development of a modern Angular application from basic Angular concepts to advanced state management and unit testing.
+A complete **Angular Student Course Portal** developed as part of the **Cognizant Digital Nurture 5.0** training program. This project demonstrates modern Angular development practices, covering everything from Angular fundamentals to advanced concepts like **NgRx State Management**, **HTTP Interceptors**, **Route Guards**, and **Unit Testing**.
 
 ---
 
-## 📌 Project Overview
+## 🚀 Features
 
-The Student Course Portal allows students to:
-
-- View available courses
-- Search for courses
-- View detailed course information
-- View students enrolled in a course
-- Enroll in courses
-- Unenroll from courses
-- View student profile information
-- Manage application state using NgRx
-- Communicate with REST APIs
-- Protect routes using guards
-- Handle HTTP requests using interceptors
-- Test Angular components and services
-
-The project was developed progressively through 10 Angular Hands-On Exercises.
+* 📚 View all available courses
+* 🔍 Search courses
+* 📖 View course details
+* 👨‍🎓 View enrolled students
+* ✅ Enroll in courses
+* ❌ Unenroll from courses
+* 👤 View student profile
+* 🎨 Dynamic course card styling
+* 🔐 Protected routes using Route Guards
+* 🌐 REST API integration
+* ⚡ State management using NgRx
+* 🧪 Unit testing with Vitest
 
 ---
 
-## 🛠️ Technologies Used
+## 🛠️ Tech Stack
 
-- Angular
-- TypeScript
-- HTML5
-- CSS3
-- RxJS
-- NgRx Store
-- NgRx Effects
-- NgRx Selectors
-- Angular Router
-- Angular HttpClient
-- REST APIs
-- JSON Server
-- Vitest
-- Angular TestBed
-- MockStore
-- Git and GitHub
+* Angular
+* TypeScript
+* HTML5
+* CSS3
+* RxJS
+* Angular Router
+* Angular HttpClient
+* NgRx Store
+* NgRx Effects
+* NgRx Selectors
+* REST API
+* JSON Server
+* Vitest
+* Angular TestBed
+* MockStore
+* Git & GitHub
 
 ---
 
-# 📚 HANDS-ON 1 — Angular Fundamentals
+# 📚 Hands-On Modules
 
-## Topics Covered
+## Hands-On 1 – Angular Fundamentals
 
-- Introduction to Angular
-- Angular CLI
-- Creating an Angular application
-- Angular project structure
-- Components
-- Templates
-- TypeScript in Angular
-- Interpolation
-- Property Binding
-- Event Binding
-- Two-Way Data Binding
+### Topics Covered
 
-### Interpolation
+* Angular CLI
+* Project Structure
+* Components
+* Templates
+* TypeScript
+* Interpolation
+* Property Binding
+* Event Binding
+* Two-Way Data Binding
+
+Example:
 
 ```html
 <h1>{{ title }}</h1>
-````
 
-### Property Binding
-
-```html
 <img [src]="imageUrl">
-```
 
-### Event Binding
+<button (click)="onClick()">Click Me</button>
 
-```html
-<button (click)="onClick()">
-  Click Me
-</button>
-```
-
-### Two-Way Data Binding
-
-```html
 <input [(ngModel)]="searchTerm">
 ```
 
 ---
 
-# 📚 HANDS-ON 2 — Components and Templates
+## Hands-On 2 – Components & Templates
 
-## Topics Covered
+### Topics Covered
 
-* Creating Angular components
-* Standalone components
-* Component structure
-* Component templates
-* Component styles
-* Component lifecycle
-* Parent-child component communication
+* Standalone Components
+* Component Lifecycle
+* Parent–Child Communication
+* Component Styling
 
-## Components Implemented
+### Components
 
-* Header Component
-* Course Card Component
-* Notification Component
-* Course List Component
-* Course Detail Component
-* Student Profile Component
+* Header
+* Course Card
+* Course List
+* Course Detail
+* Student Profile
+* Notification
 
-Angular components follow the structure:
+Structure
 
 ```text
 Component
-├── TypeScript File
-├── HTML Template
-└── CSS Styles
+├── component.ts
+├── component.html
+└── component.css
 ```
 
 ---
 
-# 📚 HANDS-ON 3 — Directives and Pipes
+## Hands-On 3 – Directives & Pipes
 
-## Topics Covered
+### Directives Used
 
-* Structural Directives
-* Attribute Directives
-* Built-in Angular Directives
-* Custom Directives
-* Built-in Pipes
-* Custom Pipes
-* Dynamic Styling
+* *ngIf
+* *ngFor
+* ngSwitch
+* Custom Highlight Directive
 
-## Directives Used
-
-### *ngIf
+Example
 
 ```html
 <p *ngIf="isLoading">
   Loading courses...
 </p>
-```
 
-### *ngFor
-
-```html
 <div *ngFor="let course of courses">
   {{ course.name }}
 </div>
 ```
 
-### ngSwitch
+### Custom Pipe
 
-```html
-<div [ngSwitch]="course.gradeStatus">
+Displays credits in a readable format.
 
-  <span *ngSwitchCase="'passed'">
-    Passed
-  </span>
-
-  <span *ngSwitchCase="'failed'">
-    Failed
-  </span>
-
-  <span *ngSwitchCase="'pending'">
-    Pending
-  </span>
-
-</div>
-```
-
-## Custom Directive
-
-A custom highlight directive was implemented to provide visual feedback when interacting with course cards.
-
-## Custom Pipe
-
-A custom credit label pipe was implemented to format course credits.
-
-Example:
+Example
 
 ```text
 4 Credits
@@ -195,51 +136,41 @@ Example:
 
 ---
 
-# 📚 HANDS-ON 4 — Services and Dependency Injection
+## Hands-On 4 – Services & Dependency Injection
 
-## Topics Covered
-
-* Angular Services
-* Dependency Injection
-* Reusable Business Logic
-* Service-Based Architecture
-* Sharing Data Between Components
-
-## Services Implemented
+### Services
 
 ### CourseService
 
 Responsible for:
 
-* Loading courses
-* Fetching individual courses
-* Fetching course students
+* Fetching all courses
+* Fetching course details
+* Fetching enrolled students
 * Communicating with the backend API
 
 ### EnrollmentService
 
-Initially responsible for:
+Responsible for:
 
-* Enrolling students in courses
-* Unenrolling students from courses
-* Managing enrolled course information
+* Course enrollment
+* Course unenrollment
+* Managing enrollment state
 
-The enrollment state was later migrated to NgRx in Hands-On 9.
+> Later migrated to **NgRx Store**.
 
 ---
 
-# 📚 HANDS-ON 5 — Routing and Navigation
+## Hands-On 5 – Routing & Navigation
 
-## Topics Covered
+### Topics
 
 * Angular Router
-* Route Configuration
-* Navigation
 * Route Parameters
 * RouterLink
 * Programmatic Navigation
 
-## Application Routes
+Routes
 
 ```text
 /courses
@@ -247,21 +178,7 @@ The enrollment state was later migrated to NgRx in Hands-On 9.
 /profile
 ```
 
-## Route Parameters
-
-Example URL:
-
-```text
-/courses/1
-```
-
-The course ID is retrieved using:
-
-```typescript
-this.route.snapshot.paramMap.get('id');
-```
-
-## Programmatic Navigation
+Navigation
 
 ```typescript
 this.router.navigate([
@@ -272,18 +189,16 @@ this.router.navigate([
 
 ---
 
-# 📚 HANDS-ON 6 — Forms and User Input
+## Hands-On 6 – Forms
 
-## Topics Covered
+### Topics
 
 * Template-Driven Forms
 * ngModel
-* User Input
-* Search Functionality
-* Query Parameters
-* Form Validation Concepts
+* Search
+* Form Validation
 
-## Course Search
+Example
 
 ```html
 <input
@@ -291,34 +206,25 @@ this.router.navigate([
   placeholder="Search course">
 ```
 
-The search term is stored in the URL using query parameters.
-
-Example:
+Search URL
 
 ```text
 /courses?search=Angular
 ```
 
-This allows the search state to be preserved in the URL.
-
 ---
 
-# 📚 HANDS-ON 7 — HTTP Client and REST API
+## Hands-On 7 – HTTP Client & REST API
 
-## Topics Covered
+### Topics
 
-* Angular HttpClient
-* HTTP GET Requests
-* REST API Communication
-* JSON Data
-* API Error Handling
+* HttpClient
+* GET Requests
+* REST APIs
+* Error Handling
 * HTTP Interceptors
 
-## Course API
-
-The CourseService communicates with the backend API to retrieve course data.
-
-Example:
+Example
 
 ```typescript
 this.http.get<Course[]>(
@@ -326,22 +232,7 @@ this.http.get<Course[]>(
 );
 ```
 
-## API Operations
-
-The application supports:
-
-* Getting all courses
-* Getting a course by ID
-* Getting students enrolled in a course
-
-## Error Handling
-
-Errors are handled using:
-
-* Service-level error handling
-* HTTP Error Interceptors
-
-Application flow:
+Application Flow
 
 ```text
 Component
@@ -357,96 +248,59 @@ Backend API
 
 ---
 
-# 📚 HANDS-ON 8 — Advanced Angular Features
+## Hands-On 8 – Advanced Angular Features
 
-## Topics Covered
+### Topics
 
 * Route Guards
 * Functional Guards
-* HTTP Interceptors
 * Authentication Interceptor
-* Error Handler Interceptor
+* Error Interceptor
 * Unsaved Changes Guard
-* Advanced Application Architecture
 
-## Route Guards
+Use Cases
 
-Guards are used to control navigation and protect application routes.
-
-Use cases include:
-
-* Preventing unauthorized access
-* Protecting pages
-* Preventing navigation with unsaved changes
-
-## HTTP Interceptors
-
-The application includes:
-
-### Authentication Interceptor
-
-Handles authentication-related HTTP logic.
-
-### Error Handler Interceptor
-
-Centralizes HTTP error handling.
-
-Application flow:
-
-```text
-Component
-    ↓
-Service
-    ↓
-HTTP Request
-    ↓
-Interceptor
-    ↓
-Backend API
-```
+* Authentication
+* Authorization
+* Prevent navigation with unsaved changes
+* Centralized error handling
 
 ---
 
-# 📚 HANDS-ON 9 — NgRx State Management
+## Hands-On 9 – NgRx State Management
 
-## Topics Covered
+### Topics
 
-* NgRx Store
+* Store
 * Actions
-* Action Creators
 * Reducers
-* Immutable State
 * Selectors
-* Memoisation
 * Effects
-* RxJS Operators
-* Async Operations
-* Enrollment State Management
 * Redux DevTools
 
-## NgRx Architecture
+Architecture
 
 ```text
 Component
     ↓
 Dispatch Action
     ↓
-NgRx Effect
+Effect
     ↓
-HTTP API
+HTTP Request
     ↓
 Success Action
     ↓
 Reducer
     ↓
-Updated Store
+Store
     ↓
 Selector
     ↓
 Component
 ```
 
-## Course State
+Course State
 
 ```typescript
 {
@@ -456,100 +310,26 @@ Component
 }
 ```
 
-## Course Actions
-
-```text
-loadCourses
-loadCoursesSuccess
-loadCoursesFailure
-```
-
-## Course Selectors
-
-```text
-selectAllCourses
-selectCoursesLoading
-selectCoursesError
-```
-
-## NgRx Effects
-
-Effects handle asynchronous operations such as HTTP requests.
-
-```text
-Action
-  ↓
-Effect
-  ↓
-HTTP Request
-  ↓
-Success / Failure Action
-```
-
-Reducers remain pure functions while Effects handle side effects.
-
-## Enrollment State
-
-Enrollment state was migrated from service-based state management to NgRx.
-
-The enrollment store manages:
+Enrollment State
 
 ```typescript
 enrolledCourseIds: string[]
 ```
 
-Actions include:
-
-```text
-enrollInCourse
-unenrollFromCourse
-setEnrolledCourses
-```
-
-The Course Card Component dispatches enrollment actions directly to the Store.
-
-## Redux DevTools
-
-Redux DevTools was configured to inspect:
-
-* Dispatched actions
-* Application state
-* Reducer updates
-* NgRx Effects flow
-
 ---
 
-# 📚 HANDS-ON 10 — Angular Unit Testing
+## Hands-On 10 – Unit Testing
 
-## Topics Covered
+### Topics
 
-* Unit Testing
 * Vitest
 * Angular TestBed
-* ComponentFixture
 * Component Testing
 * Service Testing
-* Mocking Dependencies
 * MockStore
-* Testing Inputs
-* Testing Navigation
-* Testing NgRx Components
-* Testing Route-Dependent Components
+* Route Testing
 
-## Component Testing
-
-The Course Card component was tested for:
-
-* Component creation
-* Course input data
-* Course name
-* Course code
-* Course details toggle
-* Dynamic card classes
-* Navigation
-* Enrollment actions
-
-Example:
+Example
 
 ```typescript
 it('should create', () => {
@@ -557,74 +337,18 @@ it('should create', () => {
 });
 ```
 
-## NgRx Component Testing
-
-NgRx-connected components were tested using:
+Mock Store
 
 ```typescript
-provideMockStore()
+provideMockStore();
 ```
 
-This allows the Store to be mocked during unit testing.
-
-## Service Testing
-
-Services were tested using mocked dependencies.
-
-The Course Service tests verify:
-
-* Course retrieval
-* Course detail retrieval
-* Course student retrieval
-* Service behaviour
-
-## Route-Dependent Component Testing
-
-The Course Detail component was tested using a mocked ActivatedRoute.
-
-```typescript
-snapshot: {
-  paramMap: {
-    get: vi.fn().mockReturnValue('1')
-  }
-}
-```
-
-This allows the test to simulate route parameters.
-
-## Test Results
-
-All tests passed successfully.
+Test Results
 
 ```text
-Test Files  19 passed
-Tests       25 passed
+Test Files: 19 Passed
+Tests: 25 Passed
 ```
-
-Screenshot:
-
-```text
-handson-10-angular-unit-testing-all-tests-passed.png
-```
-
----
-
-# 🏗️ Application Features
-
-The Student Course Portal currently supports:
-
-* 📚 View all courses
-* 🔍 Search courses
-* 📖 View course details
-* 👨‍🎓 View enrolled students
-* ✅ Enroll in courses
-* ❌ Unenroll from courses
-* 🎨 Dynamic course card styling
-* 🏆 Grade status display
-* 🔐 Route protection
-* 🌐 REST API communication
-* ⚡ Reactive state management with NgRx
-* 🧪 Automated unit testing
 
 ---
 
@@ -634,41 +358,17 @@ The Student Course Portal currently supports:
 student-course-portal/
 │
 ├── src/
-│   └── app/
-│       │
-│       ├── components/
-│       │   ├── course-card/
-│       │   ├── header/
-│       │   └── notification/
-│       │
-│       ├── pages/
-│       │   ├── course-list/
-│       │   ├── course-detail/
-│       │   └── student-profile/
-│       │
-│       ├── services/
-│       │   ├── course.ts
-│       │   └── enrollment.ts
-│       │
-│       ├── store/
-│       │   │
-│       │   ├── course/
-│       │   │   ├── course.actions.ts
-│       │   │   ├── course.reducer.ts
-│       │   │   ├── course.selectors.ts
-│       │   │   └── course.effects.ts
-│       │   │
-│       │   └── enrollment/
-│       │       ├── enrollment.actions.ts
-│       │       ├── enrollment.reducer.ts
-│       │       └── enrollment.selectors.ts
-│       │
-│       ├── directives/
-│       ├── pipes/
-│       ├── guards/
-│       ├── interceptors/
-│       └── models/
-│
+│   ├── app/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── store/
+│   │   ├── directives/
+│   │   ├── pipes/
+│   │   ├── guards/
+│   │   ├── interceptors/
+│   │   └── models/
+│   │
 ├── public/
 ├── package.json
 ├── angular.json
@@ -679,7 +379,13 @@ student-course-portal/
 
 ---
 
-# 🚀 Running the Application
+# 🚀 Getting Started
+
+## Clone the Repository
+
+```bash
+git clone https://github.com/<your-username>/<repository-name>.git
+```
 
 ## Install Dependencies
 
@@ -687,27 +393,27 @@ student-course-portal/
 npm install
 ```
 
-## Start the Angular Application
+## Run the Application
 
 ```bash
 ng serve
 ```
 
-The application will be available at:
+Open your browser and visit:
 
 ```text
 http://localhost:4200
 ```
 
-## Start the Backend API
+---
 
-If JSON Server is being used:
+## Start the Backend
 
 ```bash
 json-server --watch db.json
 ```
 
-The API will run on:
+Backend URL
 
 ```text
 http://localhost:3000
@@ -715,15 +421,13 @@ http://localhost:3000
 
 ---
 
-# 🧪 Running Unit Tests
-
-Run the tests:
+# 🧪 Running Tests
 
 ```bash
 ng test
 ```
 
-Run tests with coverage:
+For coverage:
 
 ```bash
 ng test --coverage
@@ -733,53 +437,45 @@ ng test --coverage
 
 # 📊 Hands-On Progress
 
-| Hands-On | Topic                             | Status      |
-| -------- | --------------------------------- | ----------- |
-| 1        | Angular Fundamentals              | ✅ Completed |
-| 2        | Components and Templates          | ✅ Completed |
-| 3        | Directives and Pipes              | ✅ Completed |
-| 4        | Services and Dependency Injection | ✅ Completed |
-| 5        | Routing and Navigation            | ✅ Completed |
-| 6        | Forms and User Input              | ✅ Completed |
-| 7        | HTTP Client and REST API          | ✅ Completed |
-| 8        | Advanced Angular Features         | ✅ Completed |
-| 9        | NgRx State Management             | ✅ Completed |
-| 10       | Angular Unit Testing              | ✅ Completed |
+| Hands-On | Topic                           | Status      |
+| -------- | ------------------------------- | ----------- |
+| 1        | Angular Fundamentals            | ✅ Completed |
+| 2        | Components & Templates          | ✅ Completed |
+| 3        | Directives & Pipes              | ✅ Completed |
+| 4        | Services & Dependency Injection | ✅ Completed |
+| 5        | Routing & Navigation            | ✅ Completed |
+| 6        | Forms & User Input              | ✅ Completed |
+| 7        | HTTP Client & REST API          | ✅ Completed |
+| 8        | Advanced Angular Features       | ✅ Completed |
+| 9        | NgRx State Management           | ✅ Completed |
+| 10       | Unit Testing                    | ✅ Completed |
 
 ---
 
-# 🎯 Final Project Status
+# 🎯 Learning Outcomes
 
-## 🎉 HANDS-ON 1–10 COMPLETED SUCCESSFULLY
-
-The project demonstrates a complete Angular application developed using modern Angular development practices.
-
-The application includes:
+This project demonstrates practical experience with:
 
 * Component-Based Architecture
 * Standalone Components
+* Angular Routing
 * Data Binding
 * Directives
 * Custom Pipes
 * Services
 * Dependency Injection
-* Angular Routing
-* Route Guards
 * HTTP Client
-* REST API Integration
+* REST APIs
+* Route Guards
 * HTTP Interceptors
 * RxJS
 * NgRx Store
-* NgRx Actions
-* NgRx Reducers
-* NgRx Selectors
 * NgRx Effects
+* NgRx Selectors
 * Redux DevTools
 * Unit Testing
 * MockStore
-* TestBed
+* Git & GitHub
 
-
-
-
+---
 
