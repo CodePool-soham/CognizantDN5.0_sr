@@ -384,7 +384,7 @@ student-course-portal/
 ## Clone the Repository
 
 ```bash
-[git clone https://github.com/<CodePool-soham>.git](https://github.com/CodePool-soham/CognizantDN5.0_sr.git)
+https://github.com/CodePool-soham/CognizantDN5.0_sr.git
 ```
 
 ## Install Dependencies
