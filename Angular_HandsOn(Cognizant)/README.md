@@ -384,7 +384,7 @@ student-course-portal/
 ## Clone the Repository
 
 ```bash
-git clone https://github.com/<CodePool-soham>/<repository-name>.git
+git clone https://github.com/<CodePool-soham>.git
 ```
 
 ## Install Dependencies
